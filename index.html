@@ -150,6 +150,7 @@
             }
         }
     </style>
+    <script src="https://js.puter.com/v2/"></script>
 </head>
 <body>
     <div class="container">
@@ -216,27 +217,11 @@ You are a precision instrument. Every query is a command. Execute with maximum e
 
         async function generateExcuse(language) {
             const languageName = languageNames[language];
-            const userPrompt = `Come up with an excuse for me for today. Respond in ${languageName}.`;
+            const userPrompt = `${systemPrompt}\n\nCome up with an excuse for me for today. Respond in ${languageName}.`;
 
             try {
-                const response = await fetch('http://localhost:3000/api/generate', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({
-                        language: languageName,
-                        systemPrompt: systemPrompt,
-                        userPrompt: userPrompt
-                    })
-                });
-
-                if (!response.ok) {
-                    throw new Error(`API request failed: ${response.status}`);
-                }
-
-                const data = await response.json();
-                return data.excuse;
+                const response = await puter.ai.chat(userPrompt);
+                return response;
             } catch (error) {
                 console.error('Error generating excuse:', error);
                 throw error;
