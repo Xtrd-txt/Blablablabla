@@ -220,7 +220,8 @@ You are a precision instrument. Every query is a command. Execute with maximum e
             const userPrompt = `${systemPrompt}\n\nCome up with an excuse for me for today. Respond in ${languageName}.`;
 
             try {
-                const response = await puter.ai.chat(userPrompt);
+                // Try Puter AI first
+                const response = await puter.ai.txt2txt(userPrompt);
                 return response;
             } catch (error) {
                 console.error('Error generating excuse:', error);
