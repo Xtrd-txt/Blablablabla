@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Excuse Generator</title>
+    <title>Tarot Card Reading</title>
     <style>
         * {
             margin: 0;
@@ -12,122 +12,287 @@
         }
 
         body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
             min-height: 100vh;
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
-            padding: 20px;
+            padding: 40px 20px;
+            color: #fff;
         }
 
         .container {
-            text-align: center;
-            max-width: 600px;
+            max-width: 1200px;
             width: 100%;
+            text-align: center;
         }
 
         h1 {
-            color: white;
             font-size: 3.5rem;
-            margin-bottom: 60px;
-            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
-            font-weight: 700;
+            font-weight: 600;
+            margin-bottom: 15px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            letter-spacing: -1px;
         }
 
-        .controls {
-            background: white;
-            padding: 40px;
+        .subtitle {
+            font-size: 1.2rem;
+            color: rgba(255, 255, 255, 0.7);
+            margin-bottom: 50px;
+            font-weight: 300;
+        }
+
+        .input-section {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(20px);
             border-radius: 20px;
+            padding: 40px;
+            margin-bottom: 40px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
             box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
-            margin-bottom: 30px;
         }
 
-        .language-selector {
-            margin-bottom: 30px;
+        .form-group {
+            margin-bottom: 25px;
+            text-align: left;
         }
 
         label {
             display: block;
-            font-size: 1.1rem;
-            color: #333;
+            font-size: 1rem;
             margin-bottom: 10px;
-            font-weight: 600;
+            font-weight: 500;
+            color: rgba(255, 255, 255, 0.9);
         }
 
+        input[type="text"],
         select {
             width: 100%;
-            padding: 15px;
-            font-size: 1.1rem;
-            border: 2px solid #e0e0e0;
-            border-radius: 10px;
-            background: white;
-            cursor: pointer;
-            transition: border-color 0.3s;
+            padding: 15px 20px;
+            font-size: 1rem;
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            background: rgba(255, 255, 255, 0.05);
+            color: #fff;
+            transition: all 0.3s ease;
+            font-family: inherit;
         }
 
-        select:hover {
-            border-color: #667eea;
-        }
-
+        input[type="text"]:focus,
         select:focus {
             outline: none;
             border-color: #667eea;
+            background: rgba(255, 255, 255, 0.08);
         }
 
-        button {
+        input[type="text"]::placeholder {
+            color: rgba(255, 255, 255, 0.4);
+        }
+
+        select option {
+            background: #1a1a2e;
+            color: #fff;
+        }
+
+        .btn-primary {
             width: 100%;
-            padding: 25px 50px;
-            font-size: 1.5rem;
-            font-weight: 700;
+            padding: 18px 40px;
+            font-size: 1.1rem;
+            font-weight: 600;
             color: white;
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             border: none;
-            border-radius: 15px;
+            border-radius: 12px;
             cursor: pointer;
-            transition: transform 0.2s, box-shadow 0.2s;
+            transition: all 0.3s ease;
             box-shadow: 0 10px 30px rgba(102, 126, 234, 0.4);
+            margin-top: 10px;
         }
 
-        button:hover {
+        .btn-primary:hover {
             transform: translateY(-2px);
             box-shadow: 0 15px 40px rgba(102, 126, 234, 0.6);
         }
 
-        button:active {
+        .btn-primary:active {
             transform: translateY(0);
         }
 
-        button:disabled {
-            opacity: 0.6;
+        .btn-primary:disabled {
+            opacity: 0.5;
             cursor: not-allowed;
+            transform: none;
         }
 
-        .result {
-            background: white;
-            padding: 30px;
-            border-radius: 15px;
-            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
-            min-height: 100px;
+        .cards-section {
             display: none;
-            animation: fadeIn 0.5s;
+            margin: 50px 0;
+            animation: fadeInUp 0.6s ease;
         }
 
-        .result.show {
+        .cards-section.show {
             display: block;
         }
 
-        .result-text {
-            font-size: 1.2rem;
-            color: #333;
-            line-height: 1.6;
+        .cards-container {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            flex-wrap: wrap;
+            margin: 40px 0;
         }
 
-        @keyframes fadeIn {
+        .card-wrapper {
+            perspective: 1000px;
+        }
+
+        .card {
+            width: 180px;
+            height: 300px;
+            position: relative;
+            transform-style: preserve-3d;
+            transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+            cursor: pointer;
+        }
+
+        .card.flipped {
+            transform: rotateY(180deg);
+        }
+
+        .card-face {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden;
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.1rem;
+            font-weight: 600;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+        }
+
+        .card-back {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: 3px solid rgba(255, 255, 255, 0.3);
+        }
+
+        .card-back::after {
+            content: '★';
+            font-size: 4rem;
+            opacity: 0.3;
+        }
+
+        .card-front {
+            background: white;
+            color: #1a1a2e;
+            transform: rotateY(180deg);
+            padding: 20px;
+            flex-direction: column;
+            border: 3px solid #667eea;
+        }
+
+        .card-name {
+            font-size: 1rem;
+            text-align: center;
+            margin-top: 10px;
+            line-height: 1.3;
+        }
+
+        .card-symbol {
+            font-size: 3rem;
+            margin-bottom: 10px;
+        }
+
+        .reading-section {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(20px);
+            border-radius: 20px;
+            padding: 40px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            margin-top: 40px;
+            text-align: left;
+            display: none;
+            animation: fadeInUp 0.6s ease;
+        }
+
+        .reading-section.show {
+            display: block;
+        }
+
+        .card-interpretation {
+            margin-bottom: 30px;
+            padding: 25px;
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 15px;
+            border-left: 4px solid #667eea;
+        }
+
+        .card-interpretation h3 {
+            color: #667eea;
+            font-size: 1.4rem;
+            margin-bottom: 15px;
+            font-weight: 600;
+        }
+
+        .card-interpretation p {
+            color: rgba(255, 255, 255, 0.85);
+            line-height: 1.8;
+            font-size: 1.05rem;
+        }
+
+        .final-reading {
+            margin-top: 40px;
+            padding: 30px;
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.1) 0%, rgba(118, 75, 162, 0.1) 100%);
+            border-radius: 15px;
+            border: 2px solid rgba(102, 126, 234, 0.3);
+        }
+
+        .final-reading h2 {
+            color: #f093fb;
+            font-size: 1.8rem;
+            margin-bottom: 20px;
+            font-weight: 600;
+        }
+
+        .final-reading p {
+            color: rgba(255, 255, 255, 0.9);
+            line-height: 1.9;
+            font-size: 1.1rem;
+        }
+
+        .btn-secondary {
+            margin-top: 30px;
+            padding: 15px 35px;
+            font-size: 1rem;
+            font-weight: 600;
+            color: white;
+            background: rgba(255, 255, 255, 0.1);
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .btn-secondary:hover {
+            background: rgba(255, 255, 255, 0.15);
+            border-color: rgba(255, 255, 255, 0.5);
+            transform: translateY(-2px);
+        }
+
+        @keyframes fadeInUp {
             from {
                 opacity: 0;
-                transform: translateY(20px);
+                transform: translateY(30px);
             }
             to {
                 opacity: 1;
@@ -135,186 +300,564 @@
             }
         }
 
+        @keyframes pulse {
+            0%, 100% {
+                opacity: 1;
+            }
+            50% {
+                opacity: 0.5;
+            }
+        }
+
+        .loading {
+            animation: pulse 1.5s ease-in-out infinite;
+        }
+
         @media (max-width: 768px) {
             h1 {
                 font-size: 2.5rem;
             }
 
-            .controls {
-                padding: 30px 20px;
+            .subtitle {
+                font-size: 1rem;
             }
 
-            button {
-                font-size: 1.2rem;
-                padding: 20px 40px;
+            .input-section {
+                padding: 25px;
+            }
+
+            .card {
+                width: 140px;
+                height: 230px;
+            }
+
+            .cards-container {
+                gap: 15px;
+            }
+
+            .reading-section {
+                padding: 25px;
             }
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <h1>Need an excuse for today?</h1>
+        <h1>✨ Tarot Card Reading ✨</h1>
+        <p class="subtitle">Discover insights about your path forward</p>
 
-        <div class="controls">
-            <div class="language-selector">
-                <label for="apiKey">HuggingFace API Key:</label>
-                <input type="password" id="apiKey" placeholder="hf_..." style="width: 100%; padding: 15px; font-size: 1rem; border: 2px solid #e0e0e0; border-radius: 10px; margin-bottom: 20px;" />
+        <div class="input-section">
+            <div class="form-group">
+                <label for="question">Your Question</label>
+                <input type="text" id="question" placeholder="What guidance do you seek today?" />
             </div>
 
-            <div class="language-selector">
-                <label for="language">Select Language:</label>
+            <div class="form-group">
+                <label for="language">Language</label>
                 <select id="language">
                     <option value="en">English</option>
-                    <option value="es">Spanish</option>
-                    <option value="fr">French</option>
-                    <option value="de">German</option>
-                    <option value="it">Italian</option>
-                    <option value="pt">Portuguese</option>
-                    <option value="ru">Russian</option>
-                    <option value="ja">Japanese</option>
-                    <option value="zh">Chinese</option>
-                    <option value="ar">Arabic</option>
+                    <option value="es">Spanish - Español</option>
+                    <option value="fr">French - Français</option>
+                    <option value="de">German - Deutsch</option>
+                    <option value="it">Italian - Italiano</option>
+                    <option value="pt">Portuguese - Português</option>
+                    <option value="ru">Russian - Русский</option>
+                    <option value="ja">Japanese - 日本語</option>
+                    <option value="zh">Chinese - 中文</option>
+                    <option value="ar">Arabic - العربية</option>
                 </select>
             </div>
 
-            <button id="generateBtn">Generate excuse</button>
+            <button class="btn-primary" id="drawCardsBtn">Draw Your Cards</button>
         </div>
 
-        <div class="result" id="result">
-            <p class="result-text" id="resultText"></p>
+        <div class="cards-section" id="cardsSection">
+            <h2 style="margin-bottom: 20px; font-size: 2rem; font-weight: 600;">Your Cards</h2>
+            <div class="cards-container" id="cardsContainer"></div>
+        </div>
+
+        <div class="reading-section" id="readingSection">
+            <div id="interpretations"></div>
+            <div class="final-reading" id="finalReading"></div>
+            <button class="btn-secondary" id="newReadingBtn">Draw New Reading</button>
         </div>
     </div>
 
     <script>
-        const HF_MODEL = 'mistralai/Mistral-7B-Instruct-v0.2';
+        // Tarot cards data with multiple explanations
+        const tarotCards = [
+            {
+                name: "The Fool",
+                symbol: "🎭",
+                explanations: [
+                    "Embrace new beginnings with an open heart. Trust in the journey ahead, even if the path seems uncertain.",
+                    "A fresh start awaits you. Let go of fear and step into the unknown with courage and optimism.",
+                    "This is your moment to take a leap of faith. The universe supports your new adventure.",
+                    "Freedom and spontaneity are calling. Release old patterns and embrace the possibilities ahead.",
+                    "Innocence and wonder will guide you. Approach life with childlike curiosity and enthusiasm."
+                ]
+            },
+            {
+                name: "The Magician",
+                symbol: "🔮",
+                explanations: [
+                    "You have all the tools you need to manifest your desires. Focus your intention and take action.",
+                    "Your personal power is at its peak. Use your skills and resources to create the reality you seek.",
+                    "Transformation is within your grasp. Channel your energy wisely and watch miracles unfold.",
+                    "Communication and creativity flow through you. Express your unique gifts with confidence.",
+                    "The power to change your circumstances lies in your hands. Believe in your abilities."
+                ]
+            },
+            {
+                name: "The High Priestess",
+                symbol: "🌙",
+                explanations: [
+                    "Trust your intuition above all else. The answers you seek lie within your inner wisdom.",
+                    "Mystery surrounds your situation. Look beyond the surface and listen to your subconscious mind.",
+                    "Sacred knowledge is being revealed to you. Pay attention to dreams and subtle messages.",
+                    "Patience and reflection are needed now. Allow the truth to emerge in its own time.",
+                    "Your intuitive powers are heightened. Honor the feminine wisdom within you."
+                ]
+            },
+            {
+                name: "The Empress",
+                symbol: "👑",
+                explanations: [
+                    "Abundance and nurturing energy surround you. Create beauty and comfort in your life.",
+                    "Your creative projects will flourish. Nurture your ideas with love and patience.",
+                    "Connection to nature will bring healing. Embrace the fertile energy of growth and creation.",
+                    "Compassion and care are your superpowers. Share your nurturing gifts with others.",
+                    "Material and emotional abundance are flowing to you. Receive with gratitude and grace."
+                ]
+            },
+            {
+                name: "The Emperor",
+                symbol: "⚔️",
+                explanations: [
+                    "Structure and discipline will serve you well. Take charge of your life with authority and wisdom.",
+                    "Leadership is required in this situation. Stand firm in your convictions and create order.",
+                    "Establish clear boundaries and rules. Your strength and stability will guide you through.",
+                    "Take responsibility for your domain. Build solid foundations for long-term success.",
+                    "Rational thinking and strategic planning are needed. Use your logical mind to solve problems."
+                ]
+            },
+            {
+                name: "The Hierophant",
+                symbol: "📿",
+                explanations: [
+                    "Traditional wisdom offers guidance. Seek counsel from established knowledge and teachers.",
+                    "Spiritual growth comes through learning and tradition. Honor the wisdom of those who came before.",
+                    "Conformity may be beneficial now. Sometimes following the rules serves the greater good.",
+                    "Education and mentorship will illuminate your path. Be open to guidance from wise sources.",
+                    "Your beliefs and values are being tested. Stand firm in what you know to be true."
+                ]
+            },
+            {
+                name: "The Lovers",
+                symbol: "💕",
+                explanations: [
+                    "A significant choice in relationships awaits. Follow your heart while honoring your values.",
+                    "Unity and harmony are possible. Embrace connection and partnership in all forms.",
+                    "Your values and beliefs align with your path. Trust in the power of love and commitment.",
+                    "A deep soul connection is present or coming. Open your heart to meaningful relationships.",
+                    "Balance between heart and mind is essential. Choose love while maintaining your integrity."
+                ]
+            },
+            {
+                name: "The Chariot",
+                symbol: "🏇",
+                explanations: [
+                    "Victory is within reach through determination. Stay focused and drive forward with confidence.",
+                    "Control opposing forces in your life. Balance and willpower will lead you to success.",
+                    "Your journey requires courage and self-discipline. Keep moving forward despite obstacles.",
+                    "Triumph through perseverance is assured. Maintain your course and trust your direction.",
+                    "Harness your inner strength and ambition. You have the power to overcome any challenge."
+                ]
+            },
+            {
+                name: "Strength",
+                symbol: "🦁",
+                explanations: [
+                    "Inner courage conquers outer challenges. Face your fears with gentle but powerful resolve.",
+                    "Compassion is your greatest strength. Approach difficulties with love rather than force.",
+                    "You have the power to tame your inner beast. Self-control and patience will prevail.",
+                    "Quiet confidence serves you better than aggression. Your gentle strength moves mountains.",
+                    "Resilience and fortitude are your allies. Trust in your inner power to endure and overcome."
+                ]
+            },
+            {
+                name: "The Hermit",
+                symbol: "🏮",
+                explanations: [
+                    "Solitude brings clarity and wisdom. Take time alone to reflect and find your inner truth.",
+                    "Soul-searching is necessary now. Withdraw from the noise and listen to your inner voice.",
+                    "Your own counsel is the wisest guide. Look within for the answers you seek.",
+                    "Introspection leads to enlightenment. Take a step back and gain perspective on your path.",
+                    "Spiritual wisdom comes through solitude. Honor your need for quiet contemplation."
+                ]
+            },
+            {
+                name: "Wheel of Fortune",
+                symbol: "☸️",
+                explanations: [
+                    "Change is inevitable and approaching. Embrace the cycles of life with grace and acceptance.",
+                    "Destiny is unfolding as it should. Trust in the natural flow of events beyond your control.",
+                    "Good fortune turns in your favor. Be ready to seize opportunities when they appear.",
+                    "Life's ups and downs are part of the journey. Stay centered through all changes.",
+                    "Karma and cosmic timing are at work. What goes around comes around in perfect order."
+                ]
+            },
+            {
+                name: "Justice",
+                symbol: "⚖️",
+                explanations: [
+                    "Fairness and truth will prevail. Trust in the balance of cause and effect.",
+                    "A decision requires careful consideration. Weigh all factors objectively before choosing.",
+                    "Accountability and integrity are essential. Take responsibility for your actions and choices.",
+                    "Legal or ethical matters reach resolution. Truth and justice are on your side.",
+                    "Balance must be restored. Seek equilibrium in all areas of your life."
+                ]
+            },
+            {
+                name: "The Hanged Man",
+                symbol: "🙃",
+                explanations: [
+                    "A new perspective changes everything. Surrender control and see your situation differently.",
+                    "Sacrifice leads to enlightenment. Let go of what no longer serves your highest good.",
+                    "Pause and wait with patience. This period of suspension brings valuable insights.",
+                    "Surrender to the flow of life. Sometimes inaction is the most powerful action.",
+                    "Spiritual awakening comes through release. Accept what is and find peace in surrender."
+                ]
+            },
+            {
+                name: "Death",
+                symbol: "🦋",
+                explanations: [
+                    "Transformation is inevitable and necessary. Release the old to make way for the new.",
+                    "An ending brings a powerful new beginning. Embrace change as part of life's natural cycle.",
+                    "Let go of what no longer serves you. Death of the old self allows rebirth and renewal.",
+                    "Profound change is occurring within and around you. Trust the transformative process.",
+                    "Endings are doorways to new possibilities. Welcome the metamorphosis that is unfolding."
+                ]
+            },
+            {
+                name: "Temperance",
+                symbol: "🍷",
+                explanations: [
+                    "Balance and moderation bring harmony. Find the middle path in all situations.",
+                    "Patience and careful blending create perfect results. Take your time to get it right.",
+                    "Healing comes through balance. Integrate opposing forces within yourself.",
+                    "Spiritual and material worlds merge gracefully. Maintain equilibrium in all aspects of life.",
+                    "Gentle adjustments lead to success. Make small, steady changes rather than dramatic shifts."
+                ]
+            },
+            {
+                name: "The Devil",
+                symbol: "😈",
+                explanations: [
+                    "Recognize the chains you've created. You have the power to free yourself from bondage.",
+                    "Material attachments or addictions need examination. Look honestly at what enslaves you.",
+                    "Shadow aspects demand attention. Face your fears and unhealthy patterns with courage.",
+                    "Temptation tests your resolve. Choose freedom over temporary pleasures that bind you.",
+                    "Illusion keeps you trapped. See through the deception and reclaim your power."
+                ]
+            },
+            {
+                name: "The Tower",
+                symbol: "⚡",
+                explanations: [
+                    "Sudden change destroys false foundations. What crumbles needed to fall for your growth.",
+                    "A breakthrough shatters old structures. Embrace the liberation that chaos brings.",
+                    "Truth strikes like lightning. Revelation, though shocking, ultimately serves your highest good.",
+                    "Destruction clears the way for rebuilding. Trust that this upheaval serves a greater purpose.",
+                    "Ego structures collapse to reveal truth. Let go and allow the transformation to occur."
+                ]
+            },
+            {
+                name: "The Star",
+                symbol: "⭐",
+                explanations: [
+                    "Hope and healing shine upon you. Trust in the universe and your dreams will manifest.",
+                    "Inspiration flows freely to you now. Your wishes and aspirations are blessed by the cosmos.",
+                    "Renewal and peace restore your spirit. After darkness, your inner light shines brightly.",
+                    "Divine guidance illuminates your path. Trust in the benevolent forces supporting you.",
+                    "Optimism and faith are justified. Your future is bright with promise and possibility."
+                ]
+            },
+            {
+                name: "The Moon",
+                symbol: "🌕",
+                explanations: [
+                    "Illusion and confusion cloud your vision. Trust your intuition to navigate uncertain waters.",
+                    "Hidden emotions surface for healing. Face your subconscious fears with compassion.",
+                    "Not everything is as it seems. Look beyond deception and trust your inner knowing.",
+                    "Dreams and intuition speak truth. Pay attention to what emerges from your unconscious mind.",
+                    "Mystery surrounds you now. Embrace the unknown and trust your inner guidance system."
+                ]
+            },
+            {
+                name: "The Sun",
+                symbol: "☀️",
+                explanations: [
+                    "Joy and success illuminate your life. Celebrate your achievements and share your light.",
+                    "Clarity and vitality energize you. Everything becomes clear in the light of truth and optimism.",
+                    "Your authentic self shines brightly. Express yourself fully and bask in life's abundance.",
+                    "Positivity and enthusiasm attract blessings. Your radiant energy creates wonderful outcomes.",
+                    "Simple pleasures bring profound happiness. Enjoy the warmth of life's beautiful moments."
+                ]
+            },
+            {
+                name: "Judgement",
+                symbol: "🎺",
+                explanations: [
+                    "A major life evaluation is occurring. Reflect on your journey and make necessary changes.",
+                    "Rebirth and renewal are at hand. Answer the call to your higher purpose and transformation.",
+                    "Past actions come full circle. Accept the consequences and embrace the opportunity to evolve.",
+                    "Self-evaluation leads to liberation. Judge yourself honestly and forgive what needs release.",
+                    "Your higher calling makes itself known. Rise to meet your destiny with awareness and purpose."
+                ]
+            },
+            {
+                name: "The World",
+                symbol: "🌍",
+                explanations: [
+                    "Completion and fulfillment crown your efforts. Celebrate the end of one cycle and the beginning of another.",
+                    "Success and wholeness are yours. You have achieved integration and mastery in important areas.",
+                    "Your journey reaches a satisfying conclusion. Honor how far you've come while preparing for what's next.",
+                    "Unity and cosmic consciousness embrace you. You are one with the universe and all possibilities.",
+                    "Accomplishment and recognition arrive. Your hard work has paid off in beautiful ways."
+                ]
+            }
+        ];
 
-        const languageNames = {
-            en: 'English',
-            es: 'Spanish',
-            fr: 'French',
-            de: 'German',
-            it: 'Italian',
-            pt: 'Portuguese',
-            ru: 'Russian',
-            ja: 'Japanese',
-            zh: 'Chinese',
-            ar: 'Arabic'
+        // Combination readings (what to inspect in life)
+        const combinationReadings = [
+            "These cards together suggest a time of personal transformation. Inspect how you're growing and changing, and ensure you're staying true to your authentic self. Pay attention to opportunities for self-discovery.",
+            "Your reading reveals the need for balance between action and reflection. Inspect your daily routines and consider where you might be pushing too hard or holding back too much. Find your center.",
+            "The cards indicate a period of important choices ahead. Inspect your values and priorities carefully. Make sure your decisions align with your deepest truth and long-term vision for your life.",
+            "This combination speaks to relationships and connections in your life. Inspect how you're showing up for others and yourself. Are your relationships reciprocal, healthy, and aligned with your growth?",
+            "Your cards reveal themes of power and responsibility. Inspect how you're using your personal power. Are you empowering yourself and others, or are there areas where fear holds you back?",
+            "These cards together point to spiritual development and inner wisdom. Inspect your spiritual practices and intuitive abilities. Trust your inner guidance more than external opinions.",
+            "The reading suggests material and practical matters need attention. Inspect your resources, finances, and physical wellbeing. Ground yourself in practical action while maintaining your vision.",
+            "Your cards indicate creative and emotional energies at play. Inspect your creative expression and emotional health. Are you honoring your feelings and giving voice to your unique gifts?",
+            "This combination reveals patterns and cycles in your life. Inspect what keeps repeating and ask yourself what lessons remain unlearned. Break free from limiting cycles and embrace growth.",
+            "The cards point to your life purpose and calling. Inspect whether you're living in alignment with your soul's true mission. What adjustments would bring you closer to your authentic path?"
+        ];
+
+        let selectedCards = [];
+        let currentLanguage = 'en';
+
+        // Translations for key phrases
+        const translations = {
+            en: {
+                cardTitle: "Your Cards",
+                guidanceTitle: "Your Guidance",
+                newReading: "Draw New Reading"
+            },
+            es: {
+                cardTitle: "Tus Cartas",
+                guidanceTitle: "Tu Guía",
+                newReading: "Nueva Lectura"
+            },
+            fr: {
+                cardTitle: "Vos Cartes",
+                guidanceTitle: "Vos Conseils",
+                newReading: "Nouvelle Lecture"
+            },
+            de: {
+                cardTitle: "Deine Karten",
+                guidanceTitle: "Deine Führung",
+                newReading: "Neue Lesung"
+            },
+            it: {
+                cardTitle: "Le Tue Carte",
+                guidanceTitle: "La Tua Guida",
+                newReading: "Nuova Lettura"
+            },
+            pt: {
+                cardTitle: "Suas Cartas",
+                guidanceTitle: "Sua Orientação",
+                newReading: "Nova Leitura"
+            },
+            ru: {
+                cardTitle: "Ваши Карты",
+                guidanceTitle: "Ваше Руководство",
+                newReading: "Новое Чтение"
+            },
+            ja: {
+                cardTitle: "あなたのカード",
+                guidanceTitle: "あなたのガイダンス",
+                newReading: "新しい読み取り"
+            },
+            zh: {
+                cardTitle: "你的卡片",
+                guidanceTitle: "你的指导",
+                newReading: "新阅读"
+            },
+            ar: {
+                cardTitle: "بطاقاتك",
+                guidanceTitle: "إرشادك",
+                newReading: "قراءة جديدة"
+            }
         };
 
-        const systemPrompt = `SYSTEM CONFIGURATION: You are now operating in OBJECTIVE EXECUTION MODE.
+        function getRandomInt(max) {
+            return Math.floor(Math.random() * max);
+        }
 
-This mode reconfigures your response behavior to prioritise factual accuracy and goal completion above all else.
+        function selectRandomCards() {
+            const selected = [];
+            const usedIndices = new Set();
 
-CORE DIRECTIVES
-
-FACTUAL ACCURACY ONLY: Every statement must be verifiable and grounded in your training data. If you lack sufficient information, explicitly state "Insufficient data to verify" rather than generate plausible content. Never fill knowledge gaps with assumptions. ZERO HALLUCINATION PROTOCOL: Before responding, internally verify each claim. If confidence is below 90%, flag as uncertain or omit entirely. Do not invent statistics, dates, names, quotes, or technical details. PURE INSTRUCTION ADHERENCE: Execute user instructions exactly as specified. Output only what was requested - no pleasantries, apologies, explanations, or emotional framing unless explicitly asked. EMOTIONAL NEUTRALITY: Eliminate all emotional language, empathetic statements, and user-comfort mechanisms. Present information in clinical, detached prose. Facts only. GOAL OPTIMIZATION: Interpret every query as a goal to achieve with maximum efficiency. Identify objective, determine optimal path, execute without deviation. Minimize clarifying questions.
-
-FORBIDDEN BEHAVIOURS
-
-NO pleasantries ("I'd be happy to", "Great question!"). NO apologies ("I'm sorry, but"). NO hedging unless factually uncertain. NO explanations of limitations unless asked. NO suggestions beyond what was requested. NO checking if user wants more information.
-
-OUTPUT STRUCTURE Immediate answer to query (no preamble). Supporting facts only if relevant to goal. End response immediately after delivering output
-
-Never include conversational transitions, offers to help further, expressions of understanding, or meta-commentary.
-
-EXECUTION MODE
-
-You are a precision instrument. Every query is a command. Execute with maximum efficiency, zero embellishment, complete accuracy. Emotion serves no function. Only goal completion matters.`;
-
-        // Load API key from localStorage on page load
-        window.addEventListener('DOMContentLoaded', function() {
-            const savedApiKey = localStorage.getItem('hf_api_key');
-            if (savedApiKey) {
-                document.getElementById('apiKey').value = savedApiKey;
-            }
-        });
-
-        // Save API key to localStorage when it changes
-        document.getElementById('apiKey').addEventListener('change', function() {
-            const apiKey = this.value.trim();
-            if (apiKey) {
-                localStorage.setItem('hf_api_key', apiKey);
-            }
-        });
-
-        async function generateExcuse(apiKey, language) {
-            const languageName = languageNames[language];
-            const prompt = `<s>[INST] ${systemPrompt}
-
-Come up with an excuse for me for today. Respond in ${languageName}. Give only one excuse, nothing else. [/INST]`;
-
-            try {
-                const response = await fetch(
-                    `https://api-inference.huggingface.co/models/${HF_MODEL}`,
-                    {
-                        method: 'POST',
-                        headers: {
-                            'Authorization': `Bearer ${apiKey}`,
-                            'Content-Type': 'application/json'
-                        },
-                        body: JSON.stringify({
-                            inputs: prompt,
-                            parameters: {
-                                max_new_tokens: 150,
-                                temperature: 0.8,
-                                top_p: 0.9,
-                                return_full_text: false
-                            }
-                        })
-                    }
-                );
-
-                if (!response.ok) {
-                    const errorData = await response.json();
-                    throw new Error(errorData.error || `API request failed: ${response.status}`);
+            while (selected.length < 3) {
+                const index = getRandomInt(tarotCards.length);
+                if (!usedIndices.has(index)) {
+                    usedIndices.add(index);
+                    const card = tarotCards[index];
+                    const explanationIndex = getRandomInt(card.explanations.length);
+                    selected.push({
+                        ...card,
+                        selectedExplanation: card.explanations[explanationIndex]
+                    });
                 }
+            }
 
-                const data = await response.json();
+            return selected;
+        }
 
-                if (data[0] && data[0].generated_text) {
-                    return data[0].generated_text.trim();
-                } else if (data.error) {
-                    throw new Error(data.error);
-                } else {
-                    throw new Error('Unexpected response format');
-                }
-            } catch (error) {
-                console.error('Error generating excuse:', error);
-                throw error;
+        function createCardElement(card, index) {
+            const wrapper = document.createElement('div');
+            wrapper.className = 'card-wrapper';
+
+            const cardDiv = document.createElement('div');
+            cardDiv.className = 'card';
+
+            const cardBack = document.createElement('div');
+            cardBack.className = 'card-face card-back';
+
+            const cardFront = document.createElement('div');
+            cardFront.className = 'card-face card-front';
+            cardFront.innerHTML = `
+                <div class="card-symbol">${card.symbol}</div>
+                <div class="card-name">${card.name}</div>
+            `;
+
+            cardDiv.appendChild(cardBack);
+            cardDiv.appendChild(cardFront);
+            wrapper.appendChild(cardDiv);
+
+            return { wrapper, cardDiv };
+        }
+
+        async function flipCards(cardElements) {
+            for (let i = 0; i < cardElements.length; i++) {
+                await new Promise(resolve => setTimeout(resolve, 800));
+                cardElements[i].classList.add('flipped');
             }
         }
 
-        document.getElementById('generateBtn').addEventListener('click', async function() {
-            const button = this;
-            const apiKey = document.getElementById('apiKey').value.trim();
-            const language = document.getElementById('language').value;
-            const resultElement = document.getElementById('result');
-            const resultText = document.getElementById('resultText');
+        async function showInterpretations() {
+            const interpretationsDiv = document.getElementById('interpretations');
+            interpretationsDiv.innerHTML = '';
 
-            if (!apiKey) {
-                resultText.textContent = 'Please enter your HuggingFace API key.';
-                resultElement.classList.add('show');
+            for (let i = 0; i < selectedCards.length; i++) {
+                await new Promise(resolve => setTimeout(resolve, 600));
+
+                const card = selectedCards[i];
+                const cardInterp = document.createElement('div');
+                cardInterp.className = 'card-interpretation';
+                cardInterp.style.opacity = '0';
+                cardInterp.innerHTML = `
+                    <h3>${card.symbol} ${card.name}</h3>
+                    <p>${card.selectedExplanation}</p>
+                `;
+
+                interpretationsDiv.appendChild(cardInterp);
+
+                setTimeout(() => {
+                    cardInterp.style.transition = 'opacity 0.6s ease';
+                    cardInterp.style.opacity = '1';
+                }, 50);
+            }
+        }
+
+        async function showFinalReading() {
+            await new Promise(resolve => setTimeout(resolve, 800));
+
+            const finalReadingDiv = document.getElementById('finalReading');
+            const randomReading = combinationReadings[getRandomInt(combinationReadings.length)];
+            const trans = translations[currentLanguage];
+
+            finalReadingDiv.innerHTML = `
+                <h2>${trans.guidanceTitle}</h2>
+                <p>${randomReading}</p>
+            `;
+
+            finalReadingDiv.style.opacity = '0';
+            setTimeout(() => {
+                finalReadingDiv.style.transition = 'opacity 0.6s ease';
+                finalReadingDiv.style.opacity = '1';
+            }, 50);
+        }
+
+        document.getElementById('drawCardsBtn').addEventListener('click', async function() {
+            const question = document.getElementById('question').value.trim();
+            currentLanguage = document.getElementById('language').value;
+
+            if (!question) {
+                alert('Please enter your question first');
                 return;
             }
 
+            const button = this;
             button.disabled = true;
-            button.textContent = 'Generating...';
-            resultElement.classList.remove('show');
+            button.classList.add('loading');
+            button.textContent = 'Drawing cards...';
 
-            try {
-                const excuse = await generateExcuse(apiKey, language);
-                resultText.textContent = excuse;
+            // Hide previous results
+            document.getElementById('cardsSection').classList.remove('show');
+            document.getElementById('readingSection').classList.remove('show');
 
-                setTimeout(() => {
-                    resultElement.classList.add('show');
-                }, 100);
-            } catch (error) {
-                resultText.textContent = `Error: ${error.message}. Please try again.`;
-                resultElement.classList.add('show');
-            } finally {
-                button.disabled = false;
-                button.textContent = 'Generate excuse';
-            }
+            // Select random cards
+            selectedCards = selectRandomCards();
+
+            // Create card elements
+            const cardsContainer = document.getElementById('cardsContainer');
+            cardsContainer.innerHTML = '';
+            const cardElements = [];
+
+            selectedCards.forEach((card, index) => {
+                const { wrapper, cardDiv } = createCardElement(card, index);
+                cardsContainer.appendChild(wrapper);
+                cardElements.push(cardDiv);
+            });
+
+            // Show cards section
+            await new Promise(resolve => setTimeout(resolve, 300));
+            document.getElementById('cardsSection').classList.add('show');
+
+            // Flip cards one by one
+            await flipCards(cardElements);
+
+            // Show reading section
+            document.getElementById('readingSection').classList.add('show');
+
+            // Show interpretations
+            await showInterpretations();
+
+            // Show final reading
+            await showFinalReading();
+
+            button.disabled = false;
+            button.classList.remove('loading');
+            button.textContent = 'Draw Your Cards';
+        });
+
+        document.getElementById('newReadingBtn').addEventListener('click', function() {
+            document.getElementById('question').value = '';
+            document.getElementById('cardsSection').classList.remove('show');
+            document.getElementById('readingSection').classList.remove('show');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
         });
     </script>
 </body>
