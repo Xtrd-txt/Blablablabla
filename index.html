@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Excuse Generator</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .container {
+            text-align: center;
+            max-width: 600px;
+            width: 100%;
+        }
+
+        h1 {
+            color: white;
+            font-size: 3.5rem;
+            margin-bottom: 60px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+            font-weight: 700;
+        }
+
+        .controls {
+            background: white;
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            margin-bottom: 30px;
+        }
+
+        .language-selector {
+            margin-bottom: 30px;
+        }
+
+        label {
+            display: block;
+            font-size: 1.1rem;
+            color: #333;
+            margin-bottom: 10px;
+            font-weight: 600;
+        }
+
+        select {
+            width: 100%;
+            padding: 15px;
+            font-size: 1.1rem;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            background: white;
+            cursor: pointer;
+            transition: border-color 0.3s;
+        }
+
+        select:hover {
+            border-color: #667eea;
+        }
+
+        select:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        button {
+            width: 100%;
+            padding: 25px 50px;
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: white;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border: none;
+            border-radius: 15px;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+            box-shadow: 0 10px 30px rgba(102, 126, 234, 0.4);
+        }
+
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 15px 40px rgba(102, 126, 234, 0.6);
+        }
+
+        button:active {
+            transform: translateY(0);
+        }
+
+        .result {
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+            min-height: 100px;
+            display: none;
+            animation: fadeIn 0.5s;
+        }
+
+        .result.show {
+            display: block;
+        }
+
+        .result-text {
+            font-size: 1.2rem;
+            color: #333;
+            line-height: 1.6;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2.5rem;
+            }
+
+            .controls {
+                padding: 30px 20px;
+            }
+
+            button {
+                font-size: 1.2rem;
+                padding: 20px 40px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Need an excuse for today?</h1>
+
+        <div class="controls">
+            <div class="language-selector">
+                <label for="language">Select Language:</label>
+                <select id="language">
+                    <option value="en">English</option>
+                    <option value="es">Spanish</option>
+                    <option value="fr">French</option>
+                    <option value="de">German</option>
+                    <option value="it">Italian</option>
+                    <option value="pt">Portuguese</option>
+                    <option value="ru">Russian</option>
+                    <option value="ja">Japanese</option>
+                    <option value="zh">Chinese</option>
+                    <option value="ar">Arabic</option>
+                </select>
+            </div>
+
+            <button id="generateBtn">Generate excuse</button>
+        </div>
+
+        <div class="result" id="result">
+            <p class="result-text" id="resultText"></p>
+        </div>
+    </div>
+
+    <script>
+        const excuses = {
+            en: [
+                "Unexpected vehicle maintenance required immediate attention.",
+                "Medical appointment scheduled weeks in advance could not be rescheduled.",
+                "Home emergency: water leak detected requiring immediate repair.",
+                "Family member experienced medical issue requiring transport to facility.",
+                "Public transportation system experienced documented service disruption.",
+                "Severe weather conditions exceeded safe driving parameters.",
+                "Childcare arrangement failed due to provider illness.",
+                "Required medication pickup from pharmacy before closure.",
+                "Essential home repair contractor only available this specific timeframe.",
+                "Veterinary emergency for household pet required immediate intervention."
+            ],
+            es: [
+                "Mantenimiento vehicular inesperado requirió atención inmediata.",
+                "Cita médica programada semanas antes no pudo reprogramarse.",
+                "Emergencia doméstica: fuga de agua detectada requiriendo reparación inmediata.",
+                "Familiar experimentó problema médico requiriendo transporte a instalación.",
+                "Sistema de transporte público experimentó interrupción de servicio documentada.",
+                "Condiciones climáticas severas excedieron parámetros de conducción segura.",
+                "Arreglo de cuidado infantil falló debido a enfermedad del proveedor.",
+                "Recogida de medicamento requerido en farmacia antes del cierre.",
+                "Contratista de reparación doméstica esencial solo disponible en este período específico.",
+                "Emergencia veterinaria para mascota doméstica requirió intervención inmediata."
+            ],
+            fr: [
+                "Maintenance véhiculaire inattendue nécessitant attention immédiate.",
+                "Rendez-vous médical programmé semaines à l'avance impossible à reprogrammer.",
+                "Urgence domestique: fuite d'eau détectée nécessitant réparation immédiate.",
+                "Membre de famille a connu problème médical nécessitant transport vers établissement.",
+                "Système de transport public a connu interruption de service documentée.",
+                "Conditions météorologiques sévères ont dépassé paramètres de conduite sécuritaire.",
+                "Arrangement de garde d'enfants a échoué en raison de maladie du fournisseur.",
+                "Récupération de médicament requis à la pharmacie avant fermeture.",
+                "Entrepreneur de réparation domestique essentielle uniquement disponible ce créneau spécifique.",
+                "Urgence vétérinaire pour animal domestique nécessitant intervention immédiate."
+            ],
+            de: [
+                "Unerwartete Fahrzeugwartung erforderte sofortige Aufmerksamkeit.",
+                "Medizinischer Termin wochen im Voraus geplant konnte nicht umgeplant werden.",
+                "Häuslicher Notfall: Wasserleck erkannt erforderte sofortige Reparatur.",
+                "Familienmitglied erlebte medizinisches Problem erforderte Transport zur Einrichtung.",
+                "Öffentliches Verkehrssystem erlebte dokumentierte Serviceunterbrechung.",
+                "Schwere Wetterbedingungen überschritten sichere Fahrparameter.",
+                "Kinderbetreuungsvereinbarung scheiterte aufgrund Anbietererkrankung.",
+                "Erforderliche Medikamentenabholung in Apotheke vor Schließung.",
+                "Wesentlicher Hausreparaturunternehmer nur in diesem spezifischen Zeitrahmen verfügbar.",
+                "Tierärztlicher Notfall für Haustier erforderte sofortige Intervention."
+            ],
+            it: [
+                "Manutenzione veicolare inaspettata richiese attenzione immediata.",
+                "Appuntamento medico programmato settimane prima non poteva essere riprogrammato.",
+                "Emergenza domestica: perdita d'acqua rilevata richiedente riparazione immediata.",
+                "Familiare ha sperimentato problema medico richiedente trasporto a struttura.",
+                "Sistema di trasporto pubblico ha sperimentato interruzione di servizio documentata.",
+                "Condizioni meteorologiche severe hanno superato parametri di guida sicura.",
+                "Accordo per assistenza all'infanzia fallito a causa di malattia del fornitore.",
+                "Ritiro di farmaco richiesto in farmacia prima della chiusura.",
+                "Appaltatore di riparazione domestica essenziale disponibile solo in questo periodo specifico.",
+                "Emergenza veterinaria per animale domestico richiese intervento immediato."
+            ],
+            pt: [
+                "Manutenção veicular inesperada requereu atenção imediata.",
+                "Consulta médica agendada semanas antes não pôde ser remarcada.",
+                "Emergência doméstica: vazamento de água detectado requerendo reparo imediato.",
+                "Membro familiar experimentou problema médico requerendo transporte para instalação.",
+                "Sistema de transporte público experimentou interrupção de serviço documentada.",
+                "Condições climáticas severas excederam parâmetros de direção segura.",
+                "Arranjo de cuidado infantil falhou devido a doença do provedor.",
+                "Retirada de medicamento requerido na farmácia antes do fechamento.",
+                "Empreiteiro de reparo doméstico essencial apenas disponível neste período específico.",
+                "Emergência veterinária para animal doméstico requereu intervenção imediata."
+            ],
+            ru: [
+                "Неожиданное техническое обслуживание транспортного средства потребовало немедленного внимания.",
+                "Медицинская встреча запланированная недели заранее не могла быть перенесена.",
+                "Домашняя чрезвычайная ситуация: обнаружена утечка воды требующая немедленного ремонта.",
+                "Член семьи испытал медицинскую проблему требующую транспортировки в учреждение.",
+                "Система общественного транспорта испытала документированное нарушение обслуживания.",
+                "Суровые погодные условия превысили параметры безопасного вождения.",
+                "Соглашение по уходу за детьми не удалось из-за болезни поставщика.",
+                "Требуемое получение лекарств из аптеки до закрытия.",
+                "Подрядчик по основному домашнему ремонту доступен только в этот конкретный временной интервал.",
+                "Ветеринарная чрезвычайная ситуация для домашнего животного потребовала немедленного вмешательства."
+            ],
+            ja: [
+                "予期しない車両メンテナンスが即座の注意を必要としました。",
+                "数週間前に予定された医療予約は再スケジュールできませんでした。",
+                "家庭緊急事態：水漏れが検出され即座の修理が必要でした。",
+                "家族が医療問題を経験し施設への輸送が必要でした。",
+                "公共交通システムが文書化されたサービス中断を経験しました。",
+                "厳しい気象条件が安全運転パラメータを超えました。",
+                "保育提供者の病気により育児手配が失敗しました。",
+                "閉店前に薬局から必要な薬の受け取りが必要でした。",
+                "必須の住宅修理業者はこの特定の時間枠でのみ利用可能でした。",
+                "家庭ペットの獣医緊急事態が即座の介入を必要としました。"
+            ],
+            zh: [
+                "意外的车辆维护需要立即关注。",
+                "提前数周安排的医疗预约无法重新安排。",
+                "家庭紧急情况：检测到漏水需要立即修复。",
+                "家庭成员遇到医疗问题需要运送到设施。",
+                "公共交通系统经历了有记录的服务中断。",
+                "恶劣天气条件超过了安全驾驶参数。",
+                "由于提供者生病儿童保育安排失败。",
+                "关闭前需要从药房取药。",
+                "必要的家庭维修承包商仅在此特定时间段可用。",
+                "家庭宠物的兽医紧急情况需要立即干预。"
+            ],
+            ar: [
+                "صيانة المركبة غير المتوقعة تطلبت اهتماماً فورياً.",
+                "موعد طبي مجدول قبل أسابيع لا يمكن إعادة جدولته.",
+                "حالة طوارئ منزلية: تم اكتشاف تسرب مياه يتطلب إصلاحاً فورياً.",
+                "أفراد العائلة واجهوا مشكلة طبية تتطلب النقل إلى المنشأة.",
+                "نظام النقل العام شهد انقطاعاً موثقاً في الخدمة.",
+                "ظروف الطقس القاسية تجاوزت معايير القيادة الآمنة.",
+                "ترتيب رعاية الطفل فشل بسبب مرض مقدم الخدمة.",
+                "استلام الدواء المطلوب من الصيدلية قبل الإغلاق.",
+                "مقاول إصلاح المنزل الأساسي متاح فقط في هذا الإطار الزمني المحدد.",
+                "حالة طوارئ بيطرية للحيوان الأليف المنزلي تطلبت تدخلاً فورياً."
+            ]
+        };
+
+        document.getElementById('generateBtn').addEventListener('click', function() {
+            const language = document.getElementById('language').value;
+            const excuseList = excuses[language];
+            const randomExcuse = excuseList[Math.floor(Math.random() * excuseList.length)];
+
+            const resultElement = document.getElementById('result');
+            const resultText = document.getElementById('resultText');
+
+            resultText.textContent = randomExcuse;
+            resultElement.classList.remove('show');
+
+            setTimeout(() => {
+                resultElement.classList.add('show');
+            }, 10);
+        });
+    </script>
+</body>
+</html>
