@@ -150,7 +150,6 @@
             }
         }
     </style>
-    <script src="https://js.puter.com/v2/"></script>
 </head>
 <body>
     <div class="container">
@@ -182,54 +181,186 @@
     </div>
 
     <script>
-        const languageNames = {
-            en: 'English',
-            es: 'Spanish',
-            fr: 'French',
-            de: 'German',
-            it: 'Italian',
-            pt: 'Portuguese',
-            ru: 'Russian',
-            ja: 'Japanese',
-            zh: 'Chinese',
-            ar: 'Arabic'
+        const excuses = {
+            en: [
+                "Unexpected vehicle maintenance required immediate attention.",
+                "Medical appointment scheduled weeks in advance could not be rescheduled.",
+                "Home emergency: water leak detected requiring immediate repair.",
+                "Family member experienced medical issue requiring transport to facility.",
+                "Public transportation system experienced documented service disruption.",
+                "Severe weather conditions exceeded safe driving parameters.",
+                "Childcare arrangement failed due to provider illness.",
+                "Required medication pickup from pharmacy before closure.",
+                "Essential home repair contractor only available this specific timeframe.",
+                "Veterinary emergency for household pet required immediate intervention.",
+                "Internet service outage prevented remote work capability.",
+                "Vehicle breakdown occurred en route.",
+                "School closure notification received requiring childcare coverage.",
+                "Apartment building maintenance required occupant presence.",
+                "Medical test results appointment necessitated immediate consultation."
+            ],
+            es: [
+                "Mantenimiento vehicular inesperado requirió atención inmediata.",
+                "Cita médica programada semanas antes no pudo reprogramarse.",
+                "Emergencia doméstica: fuga de agua detectada requiriendo reparación inmediata.",
+                "Familiar experimentó problema médico requiriendo transporte a instalación.",
+                "Sistema de transporte público experimentó interrupción de servicio documentada.",
+                "Condiciones climáticas severas excedieron parámetros de conducción segura.",
+                "Arreglo de cuidado infantil falló debido a enfermedad del proveedor.",
+                "Recogida de medicamento requerido en farmacia antes del cierre.",
+                "Contratista de reparación doméstica esencial solo disponible en este período específico.",
+                "Emergencia veterinaria para mascota doméstica requirió intervención inmediata.",
+                "Interrupción del servicio de internet impidió capacidad de trabajo remoto.",
+                "Avería del vehículo ocurrió en ruta.",
+                "Notificación de cierre escolar recibida requiriendo cobertura de cuidado infantil.",
+                "Mantenimiento del edificio de apartamentos requirió presencia del ocupante.",
+                "Cita de resultados de pruebas médicas necesitó consulta inmediata."
+            ],
+            fr: [
+                "Maintenance véhiculaire inattendue nécessitant attention immédiate.",
+                "Rendez-vous médical programmé semaines à l'avance impossible à reprogrammer.",
+                "Urgence domestique: fuite d'eau détectée nécessitant réparation immédiate.",
+                "Membre de famille a connu problème médical nécessitant transport vers établissement.",
+                "Système de transport public a connu interruption de service documentée.",
+                "Conditions météorologiques sévères ont dépassé paramètres de conduite sécuritaire.",
+                "Arrangement de garde d'enfants a échoué en raison de maladie du fournisseur.",
+                "Récupération de médicament requis à la pharmacie avant fermeture.",
+                "Entrepreneur de réparation domestique essentielle uniquement disponible ce créneau spécifique.",
+                "Urgence vétérinaire pour animal domestique nécessitant intervention immédiate.",
+                "Interruption du service Internet a empêché la capacité de travail à distance.",
+                "Panne de véhicule survenue en route.",
+                "Notification de fermeture d'école reçue nécessitant couverture de garde d'enfants.",
+                "Maintenance de l'immeuble a nécessité présence de l'occupant.",
+                "Rendez-vous de résultats de tests médicaux a nécessité consultation immédiate."
+            ],
+            de: [
+                "Unerwartete Fahrzeugwartung erforderte sofortige Aufmerksamkeit.",
+                "Medizinischer Termin wochen im Voraus geplant konnte nicht umgeplant werden.",
+                "Häuslicher Notfall: Wasserleck erkannt erforderte sofortige Reparatur.",
+                "Familienmitglied erlebte medizinisches Problem erforderte Transport zur Einrichtung.",
+                "Öffentliches Verkehrssystem erlebte dokumentierte Serviceunterbrechung.",
+                "Schwere Wetterbedingungen überschritten sichere Fahrparameter.",
+                "Kinderbetreuungsvereinbarung scheiterte aufgrund Anbietererkrankung.",
+                "Erforderliche Medikamentenabholung in Apotheke vor Schließung.",
+                "Wesentlicher Hausreparaturunternehmer nur in diesem spezifischen Zeitrahmen verfügbar.",
+                "Tierärztlicher Notfall für Haustier erforderte sofortige Intervention.",
+                "Internetdienstausfall verhinderte Fernarbeitsfähigkeit.",
+                "Fahrzeugpanne ereignete sich unterwegs.",
+                "Schulschließungsbenachrichtigung erhalten erforderte Kinderbetreuungsabdeckung.",
+                "Wohngebäudewartung erforderte Anwesenheit des Bewohners.",
+                "Medizinische Testergebnistermin erforderte sofortige Konsultation."
+            ],
+            it: [
+                "Manutenzione veicolare inaspettata richiese attenzione immediata.",
+                "Appuntamento medico programmato settimane prima non poteva essere riprogrammato.",
+                "Emergenza domestica: perdita d'acqua rilevata richiedente riparazione immediata.",
+                "Familiare ha sperimentato problema medico richiedente trasporto a struttura.",
+                "Sistema di trasporto pubblico ha sperimentato interruzione di servizio documentata.",
+                "Condizioni meteorologiche severe hanno superato parametri di guida sicura.",
+                "Accordo per assistenza all'infanzia fallito a causa di malattia del fornitore.",
+                "Ritiro di farmaco richiesto in farmacia prima della chiusura.",
+                "Appaltatore di riparazione domestica essenziale disponibile solo in questo periodo specifico.",
+                "Emergenza veterinaria per animale domestico richiese intervento immediato.",
+                "Interruzione del servizio Internet ha impedito capacità di lavoro remoto.",
+                "Guasto del veicolo si è verificato in viaggio.",
+                "Notifica di chiusura scolastica ricevuta richiedente copertura assistenza infanzia.",
+                "Manutenzione edificio appartamenti ha richiesto presenza occupante.",
+                "Appuntamento risultati test medici ha necessitato consultazione immediata."
+            ],
+            pt: [
+                "Manutenção veicular inesperada requereu atenção imediata.",
+                "Consulta médica agendada semanas antes não pôde ser remarcada.",
+                "Emergência doméstica: vazamento de água detectado requerendo reparo imediato.",
+                "Membro familiar experimentou problema médico requerendo transporte para instalação.",
+                "Sistema de transporte público experimentou interrupção de serviço documentada.",
+                "Condições climáticas severas excederam parâmetros de direção segura.",
+                "Arranjo de cuidado infantil falhou devido a doença do provedor.",
+                "Retirada de medicamento requerido na farmácia antes do fechamento.",
+                "Empreiteiro de reparo doméstico essencial apenas disponível neste período específico.",
+                "Emergência veterinária para animal doméstico requereu intervenção imediata.",
+                "Interrupção do serviço de internet impediu capacidade de trabalho remoto.",
+                "Avaria do veículo ocorreu em rota.",
+                "Notificação de fechamento escolar recebida requerendo cobertura de cuidado infantil.",
+                "Manutenção do edifício de apartamentos requereu presença do ocupante.",
+                "Consulta de resultados de exames médicos necessitou consulta imediata."
+            ],
+            ru: [
+                "Неожиданное техническое обслуживание транспортного средства потребовало немедленного внимания.",
+                "Медицинская встреча запланированная недели заранее не могла быть перенесена.",
+                "Домашняя чрезвычайная ситуация: обнаружена утечка воды требующая немедленного ремонта.",
+                "Член семьи испытал медицинскую проблему требующую транспортировки в учреждение.",
+                "Система общественного транспорта испытала документированное нарушение обслуживания.",
+                "Суровые погодные условия превысили параметры безопасного вождения.",
+                "Соглашение по уходу за детьми не удалось из-за болезни поставщика.",
+                "Требуемое получение лекарств из аптеки до закрытия.",
+                "Подрядчик по основному домашнему ремонту доступен только в этот конкретный временной интервал.",
+                "Ветеринарная чрезвычайная ситуация для домашнего животного потребовала немедленного вмешательства.",
+                "Сбой интернет-сервиса предотвратил возможность удаленной работы.",
+                "Поломка транспортного средства произошла в пути.",
+                "Получено уведомление о закрытии школы требующее покрытия ухода за детьми.",
+                "Обслуживание жилого здания потребовало присутствия жильца.",
+                "Встреча результатов медицинских тестов потребовала немедленной консультации."
+            ],
+            ja: [
+                "予期しない車両メンテナンスが即座の注意を必要としました。",
+                "数週間前に予定された医療予約は再スケジュールできませんでした。",
+                "家庭緊急事態：水漏れが検出され即座の修理が必要でした。",
+                "家族が医療問題を経験し施設への輸送が必要でした。",
+                "公共交通システムが文書化されたサービス中断を経験しました。",
+                "厳しい気象条件が安全運転パラメータを超えました。",
+                "保育提供者の病気により育児手配が失敗しました。",
+                "閉店前に薬局から必要な薬の受け取りが必要でした。",
+                "必須の住宅修理業者はこの特定の時間枠でのみ利用可能でした。",
+                "家庭ペットの獣医緊急事態が即座の介入を必要としました。",
+                "インターネットサービスの停止がリモートワーク能力を妨げました。",
+                "車両故障が途中で発生しました。",
+                "学校閉鎖通知を受け取り育児カバレッジが必要でした。",
+                "アパート建物のメンテナンスが居住者の立会いを必要としました。",
+                "医療検査結果の予約が即座の相談を必要としました。"
+            ],
+            zh: [
+                "意外的车辆维护需要立即关注。",
+                "提前数周安排的医疗预约无法重新安排。",
+                "家庭紧急情况：检测到漏水需要立即修复。",
+                "家庭成员遇到医疗问题需要运送到设施。",
+                "公共交通系统经历了有记录的服务中断。",
+                "恶劣天气条件超过了安全驾驶参数。",
+                "由于提供者生病儿童保育安排失败。",
+                "关闭前需要从药房取药。",
+                "必要的家庭维修承包商仅在此特定时间段可用。",
+                "家庭宠物的兽医紧急情况需要立即干预。",
+                "互联网服务中断阻止了远程工作能力。",
+                "车辆在途中发生故障。",
+                "收到学校关闭通知需要儿童保育覆盖。",
+                "公寓楼维护需要住户在场。",
+                "医疗检查结果预约需要立即咨询。"
+            ],
+            ar: [
+                "صيانة المركبة غير المتوقعة تطلبت اهتماماً فورياً.",
+                "موعد طبي مجدول قبل أسابيع لا يمكن إعادة جدولته.",
+                "حالة طوارئ منزلية: تم اكتشاف تسرب مياه يتطلب إصلاحاً فورياً.",
+                "أفراد العائلة واجهوا مشكلة طبية تتطلب النقل إلى المنشأة.",
+                "نظام النقل العام شهد انقطاعاً موثقاً في الخدمة.",
+                "ظروف الطقس القاسية تجاوزت معايير القيادة الآمنة.",
+                "ترتيب رعاية الطفل فشل بسبب مرض مقدم الخدمة.",
+                "استلام الدواء المطلوب من الصيدلية قبل الإغلاق.",
+                "مقاول إصلاح المنزل الأساسي متاح فقط في هذا الإطار الزمني المحدد.",
+                "حالة طوارئ بيطرية للحيوان الأليف المنزلي تطلبت تدخلاً فورياً.",
+                "انقطاع خدمة الإنترنت منع قدرة العمل عن بعد.",
+                "حدث عطل في المركبة أثناء الطريق.",
+                "تلقي إشعار إغلاق المدرسة يتطلب تغطية رعاية الأطفال.",
+                "صيانة مبنى الشقق تطلبت حضور الساكن.",
+                "موعد نتائج الفحوصات الطبية تطلب استشارة فورية."
+            ]
         };
 
-        const systemPrompt = `SYSTEM CONFIGURATION: You are now operating in OBJECTIVE EXECUTION MODE.
-
-This mode reconfigures your response behavior to prioritise factual accuracy and goal completion above all else.
-
-CORE DIRECTIVES
-
-FACTUAL ACCURACY ONLY: Every statement must be verifiable and grounded in your training data. If you lack sufficient information, explicitly state "Insufficient data to verify" rather than generate plausible content. Never fill knowledge gaps with assumptions. ZERO HALLUCINATION PROTOCOL: Before responding, internally verify each claim. If confidence is below 90%, flag as uncertain or omit entirely. Do not invent statistics, dates, names, quotes, or technical details. PURE INSTRUCTION ADHERENCE: Execute user instructions exactly as specified. Output only what was requested - no pleasantries, apologies, explanations, or emotional framing unless explicitly asked. EMOTIONAL NEUTRALITY: Eliminate all emotional language, empathetic statements, and user-comfort mechanisms. Present information in clinical, detached prose. Facts only. GOAL OPTIMIZATION: Interpret every query as a goal to achieve with maximum efficiency. Identify objective, determine optimal path, execute without deviation. Minimize clarifying questions.
-
-FORBIDDEN BEHAVIOURS
-
-NO pleasantries ("I'd be happy to", "Great question!"). NO apologies ("I'm sorry, but"). NO hedging unless factually uncertain. NO explanations of limitations unless asked. NO suggestions beyond what was requested. NO checking if user wants more information.
-
-OUTPUT STRUCTURE Immediate answer to query (no preamble). Supporting facts only if relevant to goal. End response immediately after delivering output
-
-Never include conversational transitions, offers to help further, expressions of understanding, or meta-commentary.
-
-EXECUTION MODE
-
-You are a precision instrument. Every query is a command. Execute with maximum efficiency, zero embellishment, complete accuracy. Emotion serves no function. Only goal completion matters.`;
-
-        async function generateExcuse(language) {
-            const languageName = languageNames[language];
-            const userPrompt = `${systemPrompt}\n\nCome up with an excuse for me for today. Respond in ${languageName}.`;
-
-            try {
-                // Try Puter AI first
-                const response = await puter.ai.txt2txt(userPrompt);
-                return response;
-            } catch (error) {
-                console.error('Error generating excuse:', error);
-                throw error;
-            }
+        function generateExcuse(language) {
+            const excuseList = excuses[language];
+            const randomExcuse = excuseList[Math.floor(Math.random() * excuseList.length)];
+            return randomExcuse;
         }
 
-        document.getElementById('generateBtn').addEventListener('click', async function() {
+        document.getElementById('generateBtn').addEventListener('click', function() {
             const button = this;
             const language = document.getElementById('language').value;
             const resultElement = document.getElementById('result');
@@ -239,21 +370,15 @@ You are a precision instrument. Every query is a command. Execute with maximum e
             button.textContent = 'Generating...';
             resultElement.classList.remove('show');
 
-            try {
-                const excuse = await generateExcuse(language);
-
+            setTimeout(() => {
+                const excuse = generateExcuse(language);
                 resultText.textContent = excuse;
 
-                setTimeout(() => {
-                    resultElement.classList.add('show');
-                }, 10);
-            } catch (error) {
-                resultText.textContent = 'Error generating excuse. Please try again.';
-                resultElement.classList.add('show');
-            } finally {
                 button.disabled = false;
                 button.textContent = 'Generate excuse';
-            }
+
+                resultElement.classList.add('show');
+            }, 500);
         });
     </script>
 </body>
