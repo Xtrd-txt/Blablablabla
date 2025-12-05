@@ -51,9 +51,15 @@
         }
 
         #stats {
-            font-size: 14px;
+            font-size: 12px;
             color: #666;
             margin-top: 5px;
+        }
+
+        #superStats {
+            font-size: 11px;
+            color: #3498db;
+            margin-top: 3px;
         }
 
         #score {
@@ -68,7 +74,7 @@
             margin-top: 5px;
         }
 
-        #abilityModal {
+        #abilityModal, #superAbilityModal {
             position: absolute;
             top: 0;
             left: 0;
@@ -82,23 +88,32 @@
             z-index: 100;
         }
 
-        #abilityModal.visible {
+        #abilityModal.visible, #superAbilityModal.visible {
             display: flex;
         }
 
-        #abilityModal h2 {
+        #superAbilityModal {
+            background: linear-gradient(135deg, rgba(52, 152, 219, 0.95), rgba(41, 128, 185, 0.95));
+        }
+
+        #abilityModal h2, #superAbilityModal h2 {
             font-size: 28px;
             color: #333;
             margin-bottom: 30px;
         }
 
+        #superAbilityModal h2 {
+            color: white;
+            text-shadow: 0 2px 10px rgba(0,0,0,0.3);
+        }
+
         .abilityBtn {
-            width: 260px;
+            width: 280px;
             padding: 15px 20px;
             margin: 8px;
             border: none;
             border-radius: 12px;
-            font-size: 18px;
+            font-size: 16px;
             font-weight: bold;
             color: white;
             cursor: pointer;
@@ -110,16 +125,41 @@
             box-shadow: 0 5px 20px rgba(0,0,0,0.2);
         }
 
-        .abilityBtn.health {
-            background: linear-gradient(135deg, #e74c3c, #c0392b);
+        .abilityBtn.health { background: linear-gradient(135deg, #e74c3c, #c0392b); }
+        .abilityBtn.speed { background: linear-gradient(135deg, #3498db, #2980b9); }
+        .abilityBtn.count { background: linear-gradient(135deg, #9b59b6, #8e44ad); }
+        .abilityBtn.range { background: linear-gradient(135deg, #2ecc71, #27ae60); }
+
+        .superBtn {
+            width: 300px;
+            padding: 18px 20px;
+            margin: 10px;
+            border: 2px solid rgba(255,255,255,0.5);
+            border-radius: 15px;
+            font-size: 15px;
+            font-weight: bold;
+            color: white;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s, border-color 0.2s;
+            text-align: left;
         }
 
-        .abilityBtn.speed {
-            background: linear-gradient(135deg, #3498db, #2980b9);
+        .superBtn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 8px 30px rgba(0,0,0,0.3);
+            border-color: white;
         }
 
-        .abilityBtn.count {
-            background: linear-gradient(135deg, #9b59b6, #8e44ad);
+        .superBtn.homing { background: linear-gradient(135deg, #e74c3c, #c0392b); }
+        .superBtn.split { background: linear-gradient(135deg, #f39c12, #d68910); }
+        .superBtn.orbit { background: linear-gradient(135deg, #9b59b6, #8e44ad); }
+
+        .superBtn small {
+            display: block;
+            font-weight: normal;
+            font-size: 11px;
+            opacity: 0.9;
+            margin-top: 5px;
         }
 
         #gameOverModal {
@@ -136,26 +176,10 @@
             z-index: 100;
         }
 
-        #gameOverModal.visible {
-            display: flex;
-        }
-
-        #gameOverModal h2 {
-            font-size: 42px;
-            color: white;
-            margin-bottom: 20px;
-        }
-
-        #gameOverModal p {
-            font-size: 24px;
-            color: white;
-            margin: 5px;
-        }
-
-        #gameOverModal .subtext {
-            font-size: 18px;
-            color: #aaa;
-        }
+        #gameOverModal.visible { display: flex; }
+        #gameOverModal h2 { font-size: 42px; color: white; margin-bottom: 20px; }
+        #gameOverModal p { font-size: 24px; color: white; margin: 5px; }
+        #gameOverModal .subtext { font-size: 18px; color: #aaa; }
 
         #restartBtn {
             margin-top: 30px;
@@ -170,16 +194,11 @@
             transition: transform 0.2s;
         }
 
-        #restartBtn:hover {
-            transform: scale(1.05);
-        }
+        #restartBtn:hover { transform: scale(1.05); }
 
         #startScreen {
             position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
+            top: 0; left: 0; right: 0; bottom: 0;
             background: white;
             display: flex;
             flex-direction: column;
@@ -188,30 +207,10 @@
             z-index: 100;
         }
 
-        #startScreen.hidden {
-            display: none;
-        }
-
-        #startScreen .dot {
-            width: 80px;
-            height: 80px;
-            background: #1a1a1a;
-            border-radius: 50%;
-            margin-bottom: 20px;
-            box-shadow: 0 5px 20px rgba(0,0,0,0.3);
-        }
-
-        #startScreen h1 {
-            font-size: 36px;
-            color: #333;
-            margin-bottom: 10px;
-        }
-
-        #startScreen p {
-            font-size: 16px;
-            color: #666;
-            margin-bottom: 30px;
-        }
+        #startScreen.hidden { display: none; }
+        #startScreen .dot { width: 80px; height: 80px; background: #1a1a1a; border-radius: 50%; margin-bottom: 20px; box-shadow: 0 5px 20px rgba(0,0,0,0.3); }
+        #startScreen h1 { font-size: 36px; color: #333; margin-bottom: 10px; }
+        #startScreen p { font-size: 16px; color: #666; margin-bottom: 30px; }
 
         #startBtn {
             padding: 15px 50px;
@@ -225,9 +224,7 @@
             transition: transform 0.2s;
         }
 
-        #startBtn:hover {
-            transform: scale(1.05);
-        }
+        #startBtn:hover { transform: scale(1.05); }
 
         #instructions {
             margin-top: 40px;
@@ -240,8 +237,7 @@
         #lockHint {
             position: absolute;
             bottom: 15px;
-            left: 0;
-            right: 0;
+            left: 0; right: 0;
             text-align: center;
             font-size: 12px;
             color: #999;
@@ -257,6 +253,7 @@
             <div>
                 <div id="health"></div>
                 <div id="stats"></div>
+                <div id="superStats"></div>
             </div>
             <div style="text-align: right;">
                 <div id="score">0</div>
@@ -274,8 +271,8 @@
             <div id="instructions">
                 <p>🖱️ Рухайте мишкою щоб керувати точкою</p>
                 <p>🔴 Уникайте червоних точок</p>
-                <p>🟡 Збирайте жовті точки для бафів</p>
-                <p>⚫ Автоматична стрільба по ворогах</p>
+                <p>🟡 Жовті точки - звичайні бафи</p>
+                <p>🔵 Сині точки - супер бафи!</p>
             </div>
         </div>
 
@@ -284,6 +281,23 @@
             <button class="abilityBtn health" data-type="health">❤️ +1 Здоров'я</button>
             <button class="abilityBtn speed" data-type="speed">⚡ +1 Швидкість снарядів</button>
             <button class="abilityBtn count" data-type="count">🔫 +1 Кількість снарядів</button>
+            <button class="abilityBtn range" data-type="range">🎯 +1 Дальність снарядів</button>
+        </div>
+
+        <div id="superAbilityModal">
+            <h2>⭐ СУПЕР ЗДІБНІСТЬ ⭐</h2>
+            <button class="superBtn homing" data-type="homing">
+                🎯 Самонаведення
+                <small>Снаряди автоматично наводяться на ворогів</small>
+            </button>
+            <button class="superBtn split" data-type="split">
+                💥 Розщеплення
+                <small>Снаряди розпадаються на дрібні при попаданні (0.25 урону, рикошет)</small>
+            </button>
+            <button class="superBtn orbit" data-type="orbit">
+                🛡️ Орбітальний щит
+                <small>3 снаряди обертаються навколо вас (відновлення 3 сек)</small>
+            </button>
         </div>
 
         <div id="gameOverModal">
@@ -302,6 +316,7 @@
             playerRadius: 20,
             enemyRadius: 15,
             powerUpRadius: 12,
+            superPowerUpRadius: 14,
             projectileRadius: 5,
             playerSpeed: 8,
             enemySpeed: 2,
@@ -309,12 +324,18 @@
             baseProjectileRange: 150,
             enemySpawnInterval: 5000,
             powerUpSpawnInterval: 10000,
+            superPowerUpSpawnInterval: 15000,
             shootInterval: 500,
             minSpawnDistance: 150,
             initialEnemyCount: 3,
             initialHealth: 3,
             enemyHitPoints: 2,
-            motionBlurLength: 5  // Number of trail positions
+            motionBlurLength: 5,
+            orbitRadius: 50,
+            orbitSpeed: 0.05,
+            orbitRespawnTime: 3000,
+            splitProjectileCount: 4,
+            splitProjectileDamage: 0.25
         };
 
         // Game State
@@ -323,15 +344,19 @@
             paused: false,
             score: 0,
             wave: 0,
-            spawnCount: 0,  // Track spawn count for +1 enemy every 2nd spawn
-            enemyCountBonus: 0,  // Bonus enemies from spawns
+            spawnCount: 0,
+            enemyCountBonus: 0,
             player: null,
             enemies: [],
             powerUps: [],
+            superPowerUps: [],
             projectiles: [],
+            orbitProjectiles: [],
             floatingTexts: [],
+            particles: [],
             lastEnemySpawn: 0,
             lastPowerUpSpawn: 0,
+            lastSuperPowerUpSpawn: 0,
             lastShot: 0,
             mouseX: CONFIG.canvasWidth / 2,
             mouseY: CONFIG.canvasHeight / 2,
@@ -347,16 +372,18 @@
         // UI Elements
         const healthEl = document.getElementById('health');
         const statsEl = document.getElementById('stats');
+        const superStatsEl = document.getElementById('superStats');
         const scoreEl = document.getElementById('score');
         const waveEl = document.getElementById('wave');
         const startScreen = document.getElementById('startScreen');
         const abilityModal = document.getElementById('abilityModal');
+        const superAbilityModal = document.getElementById('superAbilityModal');
         const gameOverModal = document.getElementById('gameOverModal');
         const finalScoreEl = document.getElementById('finalScore');
         const finalWaveEl = document.getElementById('finalWave');
         const lockHint = document.getElementById('lockHint');
 
-        // Player class with motion blur
+        // Player class
         class Player {
             constructor(x, y) {
                 this.x = x;
@@ -368,20 +395,24 @@
                 this.maxHealth = CONFIG.initialHealth;
                 this.projectileSpeed = CONFIG.baseProjectileSpeed;
                 this.projectileRange = CONFIG.baseProjectileRange;
-                this.projectileCount = 1;  // Number of projectiles shot at once
+                this.projectileCount = 1;
                 this.speedBonus = 0;
                 this.countBonus = 0;
+                this.rangeBonus = 0;
                 this.invincible = false;
                 this.invincibleTime = 0;
-                this.trail = [];  // For motion blur
+                this.trail = [];
+
+                // Super abilities
+                this.hasHoming = false;
+                this.hasSplit = false;
+                this.hasOrbit = false;
             }
 
             update() {
-                // Store previous position for motion blur
                 this.prevX = this.x;
                 this.prevY = this.y;
 
-                // Move towards mouse
                 const dx = game.mouseX - this.x;
                 const dy = game.mouseY - this.y;
                 const dist = Math.sqrt(dx * dx + dy * dy);
@@ -392,44 +423,32 @@
                     this.y += (dy / dist) * speed;
                 }
 
-                // Keep in bounds
                 this.x = Math.max(this.radius, Math.min(CONFIG.canvasWidth - this.radius, this.x));
                 this.y = Math.max(this.radius, Math.min(CONFIG.canvasHeight - this.radius, this.y));
 
-                // Update trail for motion blur
                 const velocityX = this.x - this.prevX;
                 const velocityY = this.y - this.prevY;
                 const velocity = Math.sqrt(velocityX * velocityX + velocityY * velocityY);
 
                 if (velocity > 1) {
                     this.trail.unshift({ x: this.prevX, y: this.prevY, alpha: 0.4 });
-                    if (this.trail.length > CONFIG.motionBlurLength) {
-                        this.trail.pop();
-                    }
+                    if (this.trail.length > CONFIG.motionBlurLength) this.trail.pop();
                 } else {
-                    // Fade out trail when not moving
-                    this.trail = this.trail.filter(t => {
-                        t.alpha -= 0.1;
-                        return t.alpha > 0;
-                    });
+                    this.trail = this.trail.filter(t => { t.alpha -= 0.1; return t.alpha > 0; });
                 }
 
-                // Update invincibility
                 if (this.invincible && Date.now() > this.invincibleTime) {
                     this.invincible = false;
                 }
             }
 
             draw() {
-                // Draw motion blur trail
+                // Motion blur
                 for (let i = this.trail.length - 1; i >= 0; i--) {
                     const t = this.trail[i];
-                    const trailAlpha = t.alpha * (1 - i / this.trail.length);
-                    const trailRadius = this.radius * (1 - i * 0.1);
-
                     ctx.beginPath();
-                    ctx.arc(t.x, t.y, trailRadius, 0, Math.PI * 2);
-                    ctx.fillStyle = `rgba(26, 26, 26, ${trailAlpha * 0.5})`;
+                    ctx.arc(t.x, t.y, this.radius * (1 - i * 0.1), 0, Math.PI * 2);
+                    ctx.fillStyle = `rgba(26, 26, 26, ${t.alpha * 0.5 * (1 - i / this.trail.length)})`;
                     ctx.fill();
                 }
 
@@ -442,7 +461,6 @@
                 // Player
                 ctx.beginPath();
                 ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
-
                 if (this.invincible && Math.floor(Date.now() / 100) % 2 === 0) {
                     ctx.fillStyle = 'rgba(26, 26, 26, 0.5)';
                 } else {
@@ -453,7 +471,7 @@
                 ctx.lineWidth = 3;
                 ctx.stroke();
 
-                // Range indicator (subtle)
+                // Range indicator
                 ctx.beginPath();
                 ctx.arc(this.x, this.y, this.projectileRange, 0, Math.PI * 2);
                 ctx.strokeStyle = 'rgba(0, 0, 0, 0.05)';
@@ -463,32 +481,20 @@
 
             takeDamage() {
                 if (this.invincible) return false;
-
                 this.health--;
                 this.invincible = true;
                 this.invincibleTime = Date.now() + 1000;
                 updateUI();
-
                 return this.health <= 0;
             }
 
-            addHealth() {
-                this.health++;
-                this.maxHealth = Math.max(this.maxHealth, this.health);
-            }
-
-            addSpeed() {
-                this.projectileSpeed += 2;
-                this.speedBonus++;
-            }
-
-            addProjectileCount() {
-                this.projectileCount++;
-                this.countBonus++;
-            }
+            addHealth() { this.health++; this.maxHealth = Math.max(this.maxHealth, this.health); }
+            addSpeed() { this.projectileSpeed += 2; this.speedBonus++; }
+            addProjectileCount() { this.projectileCount++; this.countBonus++; }
+            addRange() { this.projectileRange += 30; this.rangeBonus++; }
         }
 
-        // Enemy class with motion blur
+        // Enemy class
         class Enemy {
             constructor(x, y) {
                 this.x = x;
@@ -500,24 +506,20 @@
                 this.alpha = 0;
                 this.scale = 0.3;
                 this.spawning = true;
-                this.trail = [];  // For motion blur
+                this.trail = [];
             }
 
             update() {
                 if (this.spawning) {
                     this.alpha = Math.min(1, this.alpha + 0.1);
                     this.scale = Math.min(1, this.scale + 0.1);
-                    if (this.alpha >= 1 && this.scale >= 1) {
-                        this.spawning = false;
-                    }
+                    if (this.alpha >= 1 && this.scale >= 1) this.spawning = false;
                     return;
                 }
 
-                // Store previous position
                 this.prevX = this.x;
                 this.prevY = this.y;
 
-                // Move towards player
                 const dx = game.player.x - this.x;
                 const dy = game.player.y - this.y;
                 const dist = Math.sqrt(dx * dx + dy * dy);
@@ -527,47 +529,30 @@
                     this.y += (dy / dist) * CONFIG.enemySpeed;
                 }
 
-                // Update trail for motion blur
-                const velocityX = this.x - this.prevX;
-                const velocityY = this.y - this.prevY;
-                const velocity = Math.sqrt(velocityX * velocityX + velocityY * velocityY);
-
+                const velocity = Math.sqrt(Math.pow(this.x - this.prevX, 2) + Math.pow(this.y - this.prevY, 2));
                 if (velocity > 0.5) {
                     this.trail.unshift({ x: this.prevX, y: this.prevY, alpha: 0.3 });
-                    if (this.trail.length > CONFIG.motionBlurLength) {
-                        this.trail.pop();
-                    }
+                    if (this.trail.length > CONFIG.motionBlurLength) this.trail.pop();
                 }
-
-                // Fade trail
-                this.trail = this.trail.filter(t => {
-                    t.alpha -= 0.05;
-                    return t.alpha > 0;
-                });
+                this.trail = this.trail.filter(t => { t.alpha -= 0.05; return t.alpha > 0; });
             }
 
             draw() {
                 ctx.save();
                 ctx.globalAlpha = this.alpha;
 
-                // Draw motion blur trail
                 if (!this.spawning) {
                     for (let i = this.trail.length - 1; i >= 0; i--) {
                         const t = this.trail[i];
-                        const trailAlpha = t.alpha * (1 - i / this.trail.length);
-                        const trailRadius = this.radius * this.scale * (1 - i * 0.08);
-
                         ctx.beginPath();
-                        ctx.arc(t.x, t.y, trailRadius, 0, Math.PI * 2);
-                        ctx.fillStyle = `rgba(231, 76, 60, ${trailAlpha * 0.6})`;
+                        ctx.arc(t.x, t.y, this.radius * this.scale * (1 - i * 0.08), 0, Math.PI * 2);
+                        ctx.fillStyle = `rgba(231, 76, 60, ${t.alpha * 0.6 * (1 - i / this.trail.length)})`;
                         ctx.fill();
                     }
                 }
 
-                // Main enemy
                 ctx.translate(this.x, this.y);
                 ctx.scale(this.scale, this.scale);
-
                 ctx.beginPath();
                 ctx.arc(0, 0, this.radius, 0, Math.PI * 2);
                 ctx.fillStyle = '#e74c3c';
@@ -575,17 +560,16 @@
                 ctx.strokeStyle = '#c0392b';
                 ctx.lineWidth = 2;
                 ctx.stroke();
-
                 ctx.restore();
             }
 
-            takeDamage() {
-                this.hitPoints--;
+            takeDamage(amount = 1) {
+                this.hitPoints -= amount;
                 return this.hitPoints <= 0;
             }
         }
 
-        // PowerUp class with hover effect
+        // PowerUp class (Yellow)
         class PowerUp {
             constructor(x, y) {
                 this.x = x;
@@ -603,45 +587,24 @@
                 this.alpha = Math.min(1, this.alpha + 0.05);
                 this.pulsePhase += 0.1;
                 this.floatPhase += 0.05;
-
-                // Floating animation
                 this.y = this.baseY + Math.sin(this.floatPhase) * 3;
 
-                // Check hover (proximity to player)
-                const distToPlayer = Math.sqrt(
-                    Math.pow(this.x - game.player.x, 2) +
-                    Math.pow(this.y - game.player.y, 2)
-                );
-                const distToMouse = Math.sqrt(
-                    Math.pow(this.x - game.mouseX, 2) +
-                    Math.pow(this.y - game.mouseY, 2)
-                );
-
+                const distToPlayer = Math.sqrt(Math.pow(this.x - game.player.x, 2) + Math.pow(this.y - game.player.y, 2));
+                const distToMouse = Math.sqrt(Math.pow(this.x - game.mouseX, 2) + Math.pow(this.y - game.mouseY, 2));
                 this.hovered = distToMouse < 50 || distToPlayer < 60;
-
-                // Smooth hover scale
-                const targetScale = this.hovered ? 1.3 : 1;
-                this.hoverScale += (targetScale - this.hoverScale) * 0.2;
+                this.hoverScale += ((this.hovered ? 1.3 : 1) - this.hoverScale) * 0.2;
             }
 
             draw() {
                 const pulse = 1 + Math.sin(this.pulsePhase) * 0.15;
                 const scale = this.hoverScale * pulse;
-
-                // Outer glow (bigger when hovered)
                 const glowSize = this.hovered ? 12 : 6;
+
                 ctx.beginPath();
                 ctx.arc(this.x, this.y, (this.radius + glowSize) * scale, 0, Math.PI * 2);
                 ctx.fillStyle = `rgba(255, 220, 50, ${(this.hovered ? 0.5 : 0.3) * this.alpha})`;
                 ctx.fill();
 
-                // Inner glow
-                ctx.beginPath();
-                ctx.arc(this.x, this.y, (this.radius + 3) * scale, 0, Math.PI * 2);
-                ctx.fillStyle = `rgba(255, 230, 100, ${0.4 * this.alpha})`;
-                ctx.fill();
-
-                // Main
                 ctx.beginPath();
                 ctx.arc(this.x, this.y, this.radius * scale, 0, Math.PI * 2);
                 ctx.fillStyle = `rgba(255, 200, 0, ${this.alpha})`;
@@ -650,16 +613,12 @@
                 ctx.lineWidth = 2;
                 ctx.stroke();
 
-                // Sparkle effect when hovered
                 if (this.hovered && this.alpha > 0.5) {
-                    const sparkleCount = 4;
-                    for (let i = 0; i < sparkleCount; i++) {
-                        const angle = (this.pulsePhase * 2 + i * Math.PI / 2);
-                        const sparkleX = this.x + Math.cos(angle) * (this.radius + 8) * scale;
-                        const sparkleY = this.y + Math.sin(angle) * (this.radius + 8) * scale;
-
+                    for (let i = 0; i < 4; i++) {
+                        const angle = this.pulsePhase * 2 + i * Math.PI / 2;
                         ctx.beginPath();
-                        ctx.arc(sparkleX, sparkleY, 2, 0, Math.PI * 2);
+                        ctx.arc(this.x + Math.cos(angle) * (this.radius + 8) * scale,
+                               this.y + Math.sin(angle) * (this.radius + 8) * scale, 2, 0, Math.PI * 2);
                         ctx.fillStyle = `rgba(255, 255, 255, ${0.8 * this.alpha})`;
                         ctx.fill();
                     }
@@ -667,15 +626,100 @@
             }
         }
 
-        // Projectile class
-        class Projectile {
-            constructor(x, y, targetX, targetY, speed, range, angleOffset = 0) {
+        // Super PowerUp class (Blue)
+        class SuperPowerUp {
+            constructor(x, y) {
                 this.x = x;
                 this.y = y;
-                this.radius = CONFIG.projectileRadius;
+                this.radius = CONFIG.superPowerUpRadius;
+                this.alpha = 0;
+                this.pulsePhase = 0;
+                this.hovered = false;
+                this.hoverScale = 1;
+                this.baseY = y;
+                this.floatPhase = Math.random() * Math.PI * 2;
+                this.ringPhase = 0;
+            }
+
+            update() {
+                this.alpha = Math.min(1, this.alpha + 0.05);
+                this.pulsePhase += 0.12;
+                this.floatPhase += 0.06;
+                this.ringPhase += 0.03;
+                this.y = this.baseY + Math.sin(this.floatPhase) * 4;
+
+                const distToPlayer = Math.sqrt(Math.pow(this.x - game.player.x, 2) + Math.pow(this.y - game.player.y, 2));
+                const distToMouse = Math.sqrt(Math.pow(this.x - game.mouseX, 2) + Math.pow(this.y - game.mouseY, 2));
+                this.hovered = distToMouse < 50 || distToPlayer < 60;
+                this.hoverScale += ((this.hovered ? 1.4 : 1) - this.hoverScale) * 0.2;
+            }
+
+            draw() {
+                const pulse = 1 + Math.sin(this.pulsePhase) * 0.2;
+                const scale = this.hoverScale * pulse;
+                const glowSize = this.hovered ? 18 : 10;
+
+                // Outer ring
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, (this.radius + 20) * scale, 0, Math.PI * 2);
+                ctx.strokeStyle = `rgba(52, 152, 219, ${0.2 * this.alpha})`;
+                ctx.lineWidth = 2;
+                ctx.stroke();
+
+                // Rotating particles
+                for (let i = 0; i < 6; i++) {
+                    const angle = this.ringPhase + i * Math.PI / 3;
+                    const px = this.x + Math.cos(angle) * (this.radius + 15) * scale;
+                    const py = this.y + Math.sin(angle) * (this.radius + 15) * scale;
+                    ctx.beginPath();
+                    ctx.arc(px, py, 3, 0, Math.PI * 2);
+                    ctx.fillStyle = `rgba(52, 152, 219, ${0.6 * this.alpha})`;
+                    ctx.fill();
+                }
+
+                // Glow
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, (this.radius + glowSize) * scale, 0, Math.PI * 2);
+                ctx.fillStyle = `rgba(52, 152, 219, ${(this.hovered ? 0.5 : 0.3) * this.alpha})`;
+                ctx.fill();
+
+                // Main
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.radius * scale, 0, Math.PI * 2);
+                ctx.fillStyle = `rgba(52, 152, 219, ${this.alpha})`;
+                ctx.fill();
+                ctx.strokeStyle = `rgba(41, 128, 185, ${this.alpha})`;
+                ctx.lineWidth = 3;
+                ctx.stroke();
+
+                // Star
+                if (this.alpha > 0.5) {
+                    ctx.fillStyle = `rgba(255, 255, 255, ${0.9 * this.alpha})`;
+                    ctx.font = `${12 * scale}px sans-serif`;
+                    ctx.textAlign = 'center';
+                    ctx.textBaseline = 'middle';
+                    ctx.fillText('⭐', this.x, this.y);
+                }
+            }
+        }
+
+        // Projectile class
+        class Projectile {
+            constructor(x, y, targetX, targetY, speed, range, angleOffset = 0, options = {}) {
+                this.x = x;
+                this.y = y;
+                this.radius = options.radius || CONFIG.projectileRadius;
                 this.startX = x;
                 this.startY = y;
                 this.range = range;
+                this.speed = speed;
+                this.damage = options.damage || 1;
+                this.isHoming = options.isHoming || false;
+                this.canSplit = options.canSplit || false;
+                this.isSplitProjectile = options.isSplitProjectile || false;
+                this.bounces = options.bounces || 0;
+                this.maxBounces = options.maxBounces || 0;
+                this.color = options.color || '#333';
 
                 const dx = targetX - x;
                 const dy = targetY - y;
@@ -685,25 +729,129 @@
 
                 this.vx = Math.cos(finalAngle) * speed;
                 this.vy = Math.sin(finalAngle) * speed;
+                this.angle = finalAngle;
             }
 
             update() {
+                // Homing behavior
+                if (this.isHoming && game.enemies.length > 0) {
+                    let nearestEnemy = null;
+                    let nearestDist = 200;
+
+                    for (const enemy of game.enemies) {
+                        if (enemy.spawning) continue;
+                        const dist = Math.sqrt(Math.pow(enemy.x - this.x, 2) + Math.pow(enemy.y - this.y, 2));
+                        if (dist < nearestDist) {
+                            nearestDist = dist;
+                            nearestEnemy = enemy;
+                        }
+                    }
+
+                    if (nearestEnemy) {
+                        const targetAngle = Math.atan2(nearestEnemy.y - this.y, nearestEnemy.x - this.x);
+                        let angleDiff = targetAngle - this.angle;
+                        while (angleDiff > Math.PI) angleDiff -= Math.PI * 2;
+                        while (angleDiff < -Math.PI) angleDiff += Math.PI * 2;
+
+                        this.angle += angleDiff * 0.1;
+                        this.vx = Math.cos(this.angle) * this.speed;
+                        this.vy = Math.sin(this.angle) * this.speed;
+                    }
+                }
+
                 this.x += this.vx;
                 this.y += this.vy;
 
-                // Check if out of range
-                const traveled = Math.sqrt(
-                    Math.pow(this.x - this.startX, 2) +
-                    Math.pow(this.y - this.startY, 2)
-                );
-                return traveled > this.range;
+                // Bounce off walls for split projectiles
+                if (this.isSplitProjectile && this.bounces < this.maxBounces) {
+                    if (this.x < this.radius || this.x > CONFIG.canvasWidth - this.radius) {
+                        this.vx *= -1;
+                        this.angle = Math.atan2(this.vy, this.vx);
+                        this.bounces++;
+                        this.x = Math.max(this.radius, Math.min(CONFIG.canvasWidth - this.radius, this.x));
+                    }
+                    if (this.y < this.radius || this.y > CONFIG.canvasHeight - this.radius) {
+                        this.vy *= -1;
+                        this.angle = Math.atan2(this.vy, this.vx);
+                        this.bounces++;
+                        this.y = Math.max(this.radius, Math.min(CONFIG.canvasHeight - this.radius, this.y));
+                    }
+                }
+
+                const traveled = Math.sqrt(Math.pow(this.x - this.startX, 2) + Math.pow(this.y - this.startY, 2));
+                return traveled > this.range ||
+                       this.x < -10 || this.x > CONFIG.canvasWidth + 10 ||
+                       this.y < -10 || this.y > CONFIG.canvasHeight + 10;
             }
 
             draw() {
                 ctx.beginPath();
                 ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
-                ctx.fillStyle = '#333';
+                ctx.fillStyle = this.color;
                 ctx.fill();
+
+                // Homing indicator
+                if (this.isHoming) {
+                    ctx.beginPath();
+                    ctx.arc(this.x, this.y, this.radius + 3, 0, Math.PI * 2);
+                    ctx.strokeStyle = 'rgba(231, 76, 60, 0.5)';
+                    ctx.lineWidth = 1;
+                    ctx.stroke();
+                }
+            }
+        }
+
+        // Orbit Projectile class
+        class OrbitProjectile {
+            constructor(index, total) {
+                this.index = index;
+                this.total = total;
+                this.angle = (Math.PI * 2 / total) * index;
+                this.radius = 8;
+                this.active = true;
+                this.respawnTime = 0;
+            }
+
+            update() {
+                if (!this.active) {
+                    if (Date.now() > this.respawnTime) {
+                        this.active = true;
+                    }
+                    return;
+                }
+
+                this.angle += CONFIG.orbitSpeed;
+                this.x = game.player.x + Math.cos(this.angle) * CONFIG.orbitRadius;
+                this.y = game.player.y + Math.sin(this.angle) * CONFIG.orbitRadius;
+            }
+
+            draw() {
+                if (!this.active) return;
+
+                // Trail
+                for (let i = 1; i <= 3; i++) {
+                    const trailAngle = this.angle - i * 0.15;
+                    const tx = game.player.x + Math.cos(trailAngle) * CONFIG.orbitRadius;
+                    const ty = game.player.y + Math.sin(trailAngle) * CONFIG.orbitRadius;
+                    ctx.beginPath();
+                    ctx.arc(tx, ty, this.radius * (1 - i * 0.2), 0, Math.PI * 2);
+                    ctx.fillStyle = `rgba(155, 89, 182, ${0.3 - i * 0.08})`;
+                    ctx.fill();
+                }
+
+                // Main
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+                ctx.fillStyle = '#9b59b6';
+                ctx.fill();
+                ctx.strokeStyle = '#8e44ad';
+                ctx.lineWidth = 2;
+                ctx.stroke();
+            }
+
+            hit() {
+                this.active = false;
+                this.respawnTime = Date.now() + CONFIG.orbitRespawnTime;
             }
         }
 
@@ -741,7 +889,7 @@
             for (let i = 0; i < count; i++) {
                 const angle = (Math.PI * 2 / count) * i + Math.random() * 0.5;
                 const speed = 2 + Math.random() * 3;
-                const particle = {
+                game.particles.push({
                     x, y,
                     vx: Math.cos(angle) * speed,
                     vy: Math.sin(angle) * speed,
@@ -749,9 +897,24 @@
                     color,
                     alpha: 1,
                     life: 30
-                };
-                game.particles = game.particles || [];
-                game.particles.push(particle);
+                });
+            }
+        }
+
+        // Create split projectiles
+        function createSplitProjectiles(x, y, excludeAngle) {
+            for (let i = 0; i < CONFIG.splitProjectileCount; i++) {
+                const angle = excludeAngle + Math.PI + (Math.random() - 0.5) * Math.PI;
+                const targetX = x + Math.cos(angle) * 100;
+                const targetY = y + Math.sin(angle) * 100;
+
+                game.projectiles.push(new Projectile(x, y, targetX, targetY, 4, 300, 0, {
+                    damage: CONFIG.splitProjectileDamage,
+                    isSplitProjectile: true,
+                    maxBounces: 3,
+                    radius: 3,
+                    color: '#f39c12'
+                }));
             }
         }
 
@@ -759,11 +922,7 @@
         function spawnEnemyWave() {
             game.wave++;
             game.spawnCount++;
-
-            // +1 enemy every second spawn (every 10 seconds)
-            if (game.spawnCount % 2 === 0) {
-                game.enemyCountBonus++;
-            }
+            if (game.spawnCount % 2 === 0) game.enemyCountBonus++;
 
             const count = CONFIG.initialEnemyCount + game.enemyCountBonus;
 
@@ -773,10 +932,7 @@
                     x = CONFIG.enemyRadius + Math.random() * (CONFIG.canvasWidth - CONFIG.enemyRadius * 2);
                     y = CONFIG.enemyRadius + Math.random() * (CONFIG.canvasHeight - CONFIG.enemyRadius * 2);
                     attempts++;
-                } while (
-                    Math.sqrt(Math.pow(x - game.player.x, 2) + Math.pow(y - game.player.y, 2)) < CONFIG.minSpawnDistance &&
-                    attempts < 50
-                );
+                } while (Math.sqrt(Math.pow(x - game.player.x, 2) + Math.pow(y - game.player.y, 2)) < CONFIG.minSpawnDistance && attempts < 50);
 
                 game.enemies.push(new Enemy(x, y));
             }
@@ -791,25 +947,31 @@
                 x = CONFIG.powerUpRadius * 2 + Math.random() * (CONFIG.canvasWidth - CONFIG.powerUpRadius * 4);
                 y = CONFIG.powerUpRadius * 2 + Math.random() * (CONFIG.canvasHeight - CONFIG.powerUpRadius * 4);
                 attempts++;
-            } while (
-                Math.sqrt(Math.pow(x - game.player.x, 2) + Math.pow(y - game.player.y, 2)) < CONFIG.minSpawnDistance / 2 &&
-                attempts < 50
-            );
+            } while (Math.sqrt(Math.pow(x - game.player.x, 2) + Math.pow(y - game.player.y, 2)) < CONFIG.minSpawnDistance / 2 && attempts < 50);
 
             game.powerUps.push(new PowerUp(x, y));
         }
 
-        // Try shooting at nearest enemy
+        // Spawn super power-up
+        function spawnSuperPowerUp() {
+            let x, y, attempts = 0;
+            do {
+                x = CONFIG.superPowerUpRadius * 2 + Math.random() * (CONFIG.canvasWidth - CONFIG.superPowerUpRadius * 4);
+                y = CONFIG.superPowerUpRadius * 2 + Math.random() * (CONFIG.canvasHeight - CONFIG.superPowerUpRadius * 4);
+                attempts++;
+            } while (Math.sqrt(Math.pow(x - game.player.x, 2) + Math.pow(y - game.player.y, 2)) < CONFIG.minSpawnDistance / 2 && attempts < 50);
+
+            game.superPowerUps.push(new SuperPowerUp(x, y));
+        }
+
+        // Try shooting
         function tryShoot() {
             let nearestEnemy = null;
             let nearestDist = game.player.projectileRange;
 
             for (const enemy of game.enemies) {
                 if (enemy.spawning) continue;
-                const dist = Math.sqrt(
-                    Math.pow(enemy.x - game.player.x, 2) +
-                    Math.pow(enemy.y - game.player.y, 2)
-                );
+                const dist = Math.sqrt(Math.pow(enemy.x - game.player.x, 2) + Math.pow(enemy.y - game.player.y, 2));
                 if (dist < nearestDist) {
                     nearestDist = dist;
                     nearestEnemy = enemy;
@@ -818,33 +980,28 @@
 
             if (nearestEnemy) {
                 const count = game.player.projectileCount;
+                const options = {
+                    isHoming: game.player.hasHoming,
+                    canSplit: game.player.hasSplit
+                };
 
                 if (count === 1) {
-                    // Single projectile
                     game.projectiles.push(new Projectile(
-                        game.player.x,
-                        game.player.y,
-                        nearestEnemy.x,
-                        nearestEnemy.y,
-                        game.player.projectileSpeed,
-                        game.player.projectileRange
+                        game.player.x, game.player.y,
+                        nearestEnemy.x, nearestEnemy.y,
+                        game.player.projectileSpeed, game.player.projectileRange, 0, options
                     ));
                 } else {
-                    // Multiple projectiles with spread
-                    const spreadAngle = Math.PI / 8;  // Total spread
+                    const spreadAngle = Math.PI / 8;
                     const angleStep = spreadAngle / (count - 1);
                     const startAngle = -spreadAngle / 2;
 
                     for (let i = 0; i < count; i++) {
-                        const angleOffset = startAngle + angleStep * i;
                         game.projectiles.push(new Projectile(
-                            game.player.x,
-                            game.player.y,
-                            nearestEnemy.x,
-                            nearestEnemy.y,
-                            game.player.projectileSpeed,
-                            game.player.projectileRange,
-                            angleOffset
+                            game.player.x, game.player.y,
+                            nearestEnemy.x, nearestEnemy.y,
+                            game.player.projectileSpeed, game.player.projectileRange,
+                            startAngle + angleStep * i, options
                         ));
                     }
                 }
@@ -858,18 +1015,37 @@
                 const enemy = game.enemies[i];
                 if (enemy.spawning) continue;
 
-                const dist = Math.sqrt(
-                    Math.pow(enemy.x - game.player.x, 2) +
-                    Math.pow(enemy.y - game.player.y, 2)
-                );
+                const dist = Math.sqrt(Math.pow(enemy.x - game.player.x, 2) + Math.pow(enemy.y - game.player.y, 2));
 
                 if (dist < game.player.radius + enemy.radius) {
                     createExplosion(enemy.x, enemy.y, '#e74c3c');
                     game.enemies.splice(i, 1);
+                    if (game.player.takeDamage()) { gameOver(); return; }
+                }
+            }
 
-                    if (game.player.takeDamage()) {
-                        gameOver();
-                        return;
+            // Orbit projectiles vs Enemies
+            if (game.player.hasOrbit) {
+                for (const orbit of game.orbitProjectiles) {
+                    if (!orbit.active) continue;
+
+                    for (let i = game.enemies.length - 1; i >= 0; i--) {
+                        const enemy = game.enemies[i];
+                        if (enemy.spawning) continue;
+
+                        const dist = Math.sqrt(Math.pow(enemy.x - orbit.x, 2) + Math.pow(enemy.y - orbit.y, 2));
+
+                        if (dist < orbit.radius + enemy.radius) {
+                            if (enemy.takeDamage(1)) {
+                                createExplosion(enemy.x, enemy.y, '#e74c3c');
+                                game.enemies.splice(i, 1);
+                                game.score += 10;
+                                scoreEl.textContent = game.score;
+                            }
+                            orbit.hit();
+                            createExplosion(orbit.x, orbit.y, '#9b59b6', 4);
+                            break;
+                        }
                     }
                 }
             }
@@ -877,14 +1053,22 @@
             // Player vs PowerUps
             for (let i = game.powerUps.length - 1; i >= 0; i--) {
                 const powerUp = game.powerUps[i];
-                const dist = Math.sqrt(
-                    Math.pow(powerUp.x - game.player.x, 2) +
-                    Math.pow(powerUp.y - game.player.y, 2)
-                );
+                const dist = Math.sqrt(Math.pow(powerUp.x - game.player.x, 2) + Math.pow(powerUp.y - game.player.y, 2));
 
                 if (dist < game.player.radius + powerUp.radius) {
                     game.powerUps.splice(i, 1);
                     showAbilitySelection();
+                }
+            }
+
+            // Player vs Super PowerUps
+            for (let i = game.superPowerUps.length - 1; i >= 0; i--) {
+                const powerUp = game.superPowerUps[i];
+                const dist = Math.sqrt(Math.pow(powerUp.x - game.player.x, 2) + Math.pow(powerUp.y - game.player.y, 2));
+
+                if (dist < game.player.radius + powerUp.radius) {
+                    game.superPowerUps.splice(i, 1);
+                    showSuperAbilitySelection();
                 }
             }
 
@@ -895,14 +1079,17 @@
 
                 for (let j = game.enemies.length - 1; j >= 0; j--) {
                     const enemy = game.enemies[j];
-                    const dist = Math.sqrt(
-                        Math.pow(enemy.x - proj.x, 2) +
-                        Math.pow(enemy.y - proj.y, 2)
-                    );
+                    const dist = Math.sqrt(Math.pow(enemy.x - proj.x, 2) + Math.pow(enemy.y - proj.y, 2));
 
                     if (dist < proj.radius + enemy.radius) {
                         hit = true;
-                        if (enemy.takeDamage()) {
+
+                        // Split on hit
+                        if (proj.canSplit && !proj.isSplitProjectile) {
+                            createSplitProjectiles(proj.x, proj.y, proj.angle);
+                        }
+
+                        if (enemy.takeDamage(proj.damage)) {
                             createExplosion(enemy.x, enemy.y, '#e74c3c');
                             game.enemies.splice(j, 1);
                             game.score += 10;
@@ -912,9 +1099,7 @@
                     }
                 }
 
-                if (hit) {
-                    game.projectiles.splice(i, 1);
-                }
+                if (hit) game.projectiles.splice(i, 1);
             }
         }
 
@@ -925,18 +1110,27 @@
             for (let i = game.player.health; i < game.player.maxHealth; i++) hearts += '🖤';
             healthEl.textContent = hearts;
 
-            statsEl.textContent = `⚡${game.player.speedBonus}  🔫${game.player.countBonus}`;
+            statsEl.textContent = `⚡${game.player.speedBonus} 🔫${game.player.countBonus} 🎯${game.player.rangeBonus}`;
+
+            let superStats = [];
+            if (game.player.hasHoming) superStats.push('🎯');
+            if (game.player.hasSplit) superStats.push('💥');
+            if (game.player.hasOrbit) superStats.push('🛡️');
+            superStatsEl.textContent = superStats.length > 0 ? 'Супер: ' + superStats.join(' ') : '';
         }
 
         // Show ability selection
         function showAbilitySelection() {
             game.paused = true;
             abilityModal.classList.add('visible');
+            if (document.pointerLockElement) document.exitPointerLock();
+        }
 
-            // Exit pointer lock for ability selection
-            if (document.pointerLockElement) {
-                document.exitPointerLock();
-            }
+        // Show super ability selection
+        function showSuperAbilitySelection() {
+            game.paused = true;
+            superAbilityModal.classList.add('visible');
+            if (document.pointerLockElement) document.exitPointerLock();
         }
 
         // Apply ability
@@ -945,34 +1139,53 @@
 
             switch (type) {
                 case 'health':
-                    game.player.addHealth();
-                    text = '+1 Здоров\'я';
+                    game.player.addHealth(); text = '+1 Здоров\'я'; color = '#e74c3c'; break;
+                case 'speed':
+                    game.player.addSpeed(); text = '+1 Швидкість'; color = '#3498db'; break;
+                case 'count':
+                    game.player.addProjectileCount(); text = '+1 Снаряд'; color = '#9b59b6'; break;
+                case 'range':
+                    game.player.addRange(); text = '+1 Дальність'; color = '#2ecc71'; break;
+            }
+
+            game.floatingTexts.push(new FloatingText(game.player.x, game.player.y - 40, text, color));
+            updateUI();
+            abilityModal.classList.remove('visible');
+            game.paused = false;
+            canvas.requestPointerLock();
+        }
+
+        // Apply super ability
+        function applySuperAbility(type) {
+            let text, color;
+
+            switch (type) {
+                case 'homing':
+                    game.player.hasHoming = true;
+                    text = '🎯 Самонаведення!';
                     color = '#e74c3c';
                     break;
-                case 'speed':
-                    game.player.addSpeed();
-                    text = '+1 Швидкість';
-                    color = '#3498db';
+                case 'split':
+                    game.player.hasSplit = true;
+                    text = '💥 Розщеплення!';
+                    color = '#f39c12';
                     break;
-                case 'count':
-                    game.player.addProjectileCount();
-                    text = '+1 Снаряд';
+                case 'orbit':
+                    game.player.hasOrbit = true;
+                    game.orbitProjectiles = [
+                        new OrbitProjectile(0, 3),
+                        new OrbitProjectile(1, 3),
+                        new OrbitProjectile(2, 3)
+                    ];
+                    text = '🛡️ Орбітальний щит!';
                     color = '#9b59b6';
                     break;
             }
 
-            game.floatingTexts.push(new FloatingText(
-                game.player.x,
-                game.player.y - 40,
-                text,
-                color
-            ));
-
+            game.floatingTexts.push(new FloatingText(game.player.x, game.player.y - 40, text, color));
             updateUI();
-            abilityModal.classList.remove('visible');
+            superAbilityModal.classList.remove('visible');
             game.paused = false;
-
-            // Re-lock pointer after selection
             canvas.requestPointerLock();
         }
 
@@ -982,11 +1195,7 @@
             finalScoreEl.textContent = `Рахунок: ${game.score}`;
             finalWaveEl.textContent = `Хвиля: ${game.wave}`;
             gameOverModal.classList.add('visible');
-
-            // Exit pointer lock
-            if (document.pointerLockElement) {
-                document.exitPointerLock();
-            }
+            if (document.pointerLockElement) document.exitPointerLock();
         }
 
         // Start game
@@ -1001,11 +1210,14 @@
                 player: new Player(CONFIG.canvasWidth / 2, CONFIG.canvasHeight / 2),
                 enemies: [],
                 powerUps: [],
+                superPowerUps: [],
                 projectiles: [],
+                orbitProjectiles: [],
                 particles: [],
                 floatingTexts: [],
                 lastEnemySpawn: Date.now(),
                 lastPowerUpSpawn: Date.now(),
+                lastSuperPowerUpSpawn: Date.now(),
                 lastShot: Date.now(),
                 mouseX: CONFIG.canvasWidth / 2,
                 mouseY: CONFIG.canvasHeight / 2,
@@ -1015,14 +1227,11 @@
             startScreen.classList.add('hidden');
             gameOverModal.classList.remove('visible');
             abilityModal.classList.remove('visible');
+            superAbilityModal.classList.remove('visible');
             updateUI();
             scoreEl.textContent = '0';
             waveEl.textContent = 'Хвиля 1';
-
-            // Request pointer lock
             canvas.requestPointerLock();
-
-            // Spawn first wave immediately
             spawnEnemyWave();
         }
 
@@ -1031,43 +1240,30 @@
             if (game.running && !game.paused) {
                 const now = Date.now();
 
-                // Update
                 game.player.update();
+                for (const enemy of game.enemies) enemy.update();
+                for (const powerUp of game.powerUps) powerUp.update();
+                for (const superPowerUp of game.superPowerUps) superPowerUp.update();
 
-                for (const enemy of game.enemies) {
-                    enemy.update();
-                }
-
-                for (const powerUp of game.powerUps) {
-                    powerUp.update();
-                }
+                // Update orbit projectiles
+                for (const orbit of game.orbitProjectiles) orbit.update();
 
                 // Update projectiles
                 for (let i = game.projectiles.length - 1; i >= 0; i--) {
-                    if (game.projectiles[i].update()) {
-                        game.projectiles.splice(i, 1);
-                    }
+                    if (game.projectiles[i].update()) game.projectiles.splice(i, 1);
                 }
 
                 // Update particles
-                if (game.particles) {
-                    for (let i = game.particles.length - 1; i >= 0; i--) {
-                        const p = game.particles[i];
-                        p.x += p.vx;
-                        p.y += p.vy;
-                        p.life--;
-                        p.alpha = p.life / 30;
-                        if (p.life <= 0) {
-                            game.particles.splice(i, 1);
-                        }
-                    }
+                for (let i = game.particles.length - 1; i >= 0; i--) {
+                    const p = game.particles[i];
+                    p.x += p.vx; p.y += p.vy;
+                    p.life--; p.alpha = p.life / 30;
+                    if (p.life <= 0) game.particles.splice(i, 1);
                 }
 
                 // Update floating texts
                 for (let i = game.floatingTexts.length - 1; i >= 0; i--) {
-                    if (game.floatingTexts[i].update()) {
-                        game.floatingTexts.splice(i, 1);
-                    }
+                    if (game.floatingTexts[i].update()) game.floatingTexts.splice(i, 1);
                 }
 
                 // Spawning
@@ -1081,13 +1277,17 @@
                     spawnPowerUp();
                 }
 
+                if (now - game.lastSuperPowerUpSpawn > CONFIG.superPowerUpSpawnInterval) {
+                    game.lastSuperPowerUpSpawn = now;
+                    spawnSuperPowerUp();
+                }
+
                 // Shooting
                 if (now - game.lastShot > CONFIG.shootInterval) {
                     game.lastShot = now;
                     tryShoot();
                 }
 
-                // Collisions
                 checkCollisions();
             }
 
@@ -1096,51 +1296,35 @@
             ctx.fillRect(0, 0, CONFIG.canvasWidth, CONFIG.canvasHeight);
 
             if (game.player) {
-                // Draw power-ups
-                for (const powerUp of game.powerUps) {
-                    powerUp.draw();
+                for (const powerUp of game.powerUps) powerUp.draw();
+                for (const superPowerUp of game.superPowerUps) superPowerUp.draw();
+                for (const proj of game.projectiles) proj.draw();
+                for (const enemy of game.enemies) enemy.draw();
+
+                for (const p of game.particles) {
+                    ctx.save();
+                    ctx.globalAlpha = p.alpha;
+                    ctx.beginPath();
+                    ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
+                    ctx.fillStyle = p.color;
+                    ctx.fill();
+                    ctx.restore();
                 }
 
-                // Draw projectiles
-                for (const proj of game.projectiles) {
-                    proj.draw();
-                }
-
-                // Draw enemies
-                for (const enemy of game.enemies) {
-                    enemy.draw();
-                }
-
-                // Draw particles
-                if (game.particles) {
-                    for (const p of game.particles) {
-                        ctx.save();
-                        ctx.globalAlpha = p.alpha;
-                        ctx.beginPath();
-                        ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
-                        ctx.fillStyle = p.color;
-                        ctx.fill();
-                        ctx.restore();
-                    }
-                }
-
-                // Draw player
                 game.player.draw();
 
-                // Draw floating texts
-                for (const text of game.floatingTexts) {
-                    text.draw();
-                }
+                // Draw orbit projectiles
+                for (const orbit of game.orbitProjectiles) orbit.draw();
+
+                for (const text of game.floatingTexts) text.draw();
             }
 
             requestAnimationFrame(gameLoop);
         }
 
-        // Pointer Lock API for cursor confinement
+        // Event listeners
         canvas.addEventListener('click', () => {
-            if (game.running && !game.paused) {
-                canvas.requestPointerLock();
-            }
+            if (game.running && !game.paused) canvas.requestPointerLock();
         });
 
         document.addEventListener('pointerlockchange', () => {
@@ -1148,25 +1332,14 @@
             lockHint.style.display = game.pointerLocked ? 'none' : 'block';
         });
 
-        // Mouse movement (works with pointer lock)
         document.addEventListener('mousemove', (e) => {
             if (document.pointerLockElement === canvas) {
-                // Pointer is locked - use movement delta
-                game.mouseX += e.movementX;
-                game.mouseY += e.movementY;
-
-                // Clamp to canvas bounds
-                game.mouseX = Math.max(0, Math.min(CONFIG.canvasWidth, game.mouseX));
-                game.mouseY = Math.max(0, Math.min(CONFIG.canvasHeight, game.mouseY));
+                game.mouseX = Math.max(0, Math.min(CONFIG.canvasWidth, game.mouseX + e.movementX));
+                game.mouseY = Math.max(0, Math.min(CONFIG.canvasHeight, game.mouseY + e.movementY));
             } else {
-                // Normal mode - use absolute position
                 const rect = canvas.getBoundingClientRect();
-                game.mouseX = e.clientX - rect.left;
-                game.mouseY = e.clientY - rect.top;
-
-                // Clamp to canvas bounds
-                game.mouseX = Math.max(0, Math.min(CONFIG.canvasWidth, game.mouseX));
-                game.mouseY = Math.max(0, Math.min(CONFIG.canvasHeight, game.mouseY));
+                game.mouseX = Math.max(0, Math.min(CONFIG.canvasWidth, e.clientX - rect.left));
+                game.mouseY = Math.max(0, Math.min(CONFIG.canvasHeight, e.clientY - rect.top));
             }
         });
 
@@ -1190,12 +1363,13 @@
         document.getElementById('restartBtn').addEventListener('click', startGame);
 
         document.querySelectorAll('.abilityBtn').forEach(btn => {
-            btn.addEventListener('click', () => {
-                applyAbility(btn.dataset.type);
-            });
+            btn.addEventListener('click', () => applyAbility(btn.dataset.type));
         });
 
-        // Start game loop
+        document.querySelectorAll('.superBtn').forEach(btn => {
+            btn.addEventListener('click', () => applySuperAbility(btn.dataset.type));
+        });
+
         gameLoop();
     </script>
 </body>
