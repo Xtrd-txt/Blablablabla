@@ -93,7 +93,7 @@
         }
 
         .abilityBtn {
-            width: 220px;
+            width: 260px;
             padding: 15px 20px;
             margin: 8px;
             border: none;
@@ -118,8 +118,8 @@
             background: linear-gradient(135deg, #3498db, #2980b9);
         }
 
-        .abilityBtn.range {
-            background: linear-gradient(135deg, #2ecc71, #27ae60);
+        .abilityBtn.count {
+            background: linear-gradient(135deg, #9b59b6, #8e44ad);
         }
 
         #gameOverModal {
@@ -236,6 +236,17 @@
             font-size: 14px;
             line-height: 1.8;
         }
+
+        #lockHint {
+            position: absolute;
+            bottom: 15px;
+            left: 0;
+            right: 0;
+            text-align: center;
+            font-size: 12px;
+            color: #999;
+            pointer-events: none;
+        }
     </style>
 </head>
 <body>
@@ -253,6 +264,8 @@
             </div>
         </div>
 
+        <div id="lockHint">Натисніть на гру для захоплення курсора</div>
+
         <div id="startScreen">
             <div class="dot"></div>
             <h1>DotGame</h1>
@@ -269,8 +282,8 @@
         <div id="abilityModal">
             <h2>Оберіть здібність</h2>
             <button class="abilityBtn health" data-type="health">❤️ +1 Здоров'я</button>
-            <button class="abilityBtn speed" data-type="speed">⚡ +1 Швидкість</button>
-            <button class="abilityBtn range" data-type="range">🎯 +1 Дальність</button>
+            <button class="abilityBtn speed" data-type="speed">⚡ +1 Швидкість снарядів</button>
+            <button class="abilityBtn count" data-type="count">🔫 +1 Кількість снарядів</button>
         </div>
 
         <div id="gameOverModal">
@@ -293,14 +306,15 @@
             playerSpeed: 8,
             enemySpeed: 2,
             baseProjectileSpeed: 6,
-            baseProjectileRange: 120,
+            baseProjectileRange: 150,
             enemySpawnInterval: 5000,
             powerUpSpawnInterval: 10000,
             shootInterval: 500,
             minSpawnDistance: 150,
             initialEnemyCount: 3,
             initialHealth: 3,
-            enemyHitPoints: 2
+            enemyHitPoints: 2,
+            motionBlurLength: 5  // Number of trail positions
         };
 
         // Game State
@@ -309,6 +323,8 @@
             paused: false,
             score: 0,
             wave: 0,
+            spawnCount: 0,  // Track spawn count for +1 enemy every 2nd spawn
+            enemyCountBonus: 0,  // Bonus enemies from spawns
             player: null,
             enemies: [],
             powerUps: [],
@@ -318,7 +334,8 @@
             lastPowerUpSpawn: 0,
             lastShot: 0,
             mouseX: CONFIG.canvasWidth / 2,
-            mouseY: CONFIG.canvasHeight / 2
+            mouseY: CONFIG.canvasHeight / 2,
+            pointerLocked: false
         };
 
         // Canvas setup
@@ -337,24 +354,33 @@
         const gameOverModal = document.getElementById('gameOverModal');
         const finalScoreEl = document.getElementById('finalScore');
         const finalWaveEl = document.getElementById('finalWave');
+        const lockHint = document.getElementById('lockHint');
 
-        // Player class
+        // Player class with motion blur
         class Player {
             constructor(x, y) {
                 this.x = x;
                 this.y = y;
+                this.prevX = x;
+                this.prevY = y;
                 this.radius = CONFIG.playerRadius;
                 this.health = CONFIG.initialHealth;
                 this.maxHealth = CONFIG.initialHealth;
                 this.projectileSpeed = CONFIG.baseProjectileSpeed;
                 this.projectileRange = CONFIG.baseProjectileRange;
+                this.projectileCount = 1;  // Number of projectiles shot at once
                 this.speedBonus = 0;
-                this.rangeBonus = 0;
+                this.countBonus = 0;
                 this.invincible = false;
                 this.invincibleTime = 0;
+                this.trail = [];  // For motion blur
             }
 
             update() {
+                // Store previous position for motion blur
+                this.prevX = this.x;
+                this.prevY = this.y;
+
                 // Move towards mouse
                 const dx = game.mouseX - this.x;
                 const dy = game.mouseY - this.y;
@@ -370,6 +396,24 @@
                 this.x = Math.max(this.radius, Math.min(CONFIG.canvasWidth - this.radius, this.x));
                 this.y = Math.max(this.radius, Math.min(CONFIG.canvasHeight - this.radius, this.y));
 
+                // Update trail for motion blur
+                const velocityX = this.x - this.prevX;
+                const velocityY = this.y - this.prevY;
+                const velocity = Math.sqrt(velocityX * velocityX + velocityY * velocityY);
+
+                if (velocity > 1) {
+                    this.trail.unshift({ x: this.prevX, y: this.prevY, alpha: 0.4 });
+                    if (this.trail.length > CONFIG.motionBlurLength) {
+                        this.trail.pop();
+                    }
+                } else {
+                    // Fade out trail when not moving
+                    this.trail = this.trail.filter(t => {
+                        t.alpha -= 0.1;
+                        return t.alpha > 0;
+                    });
+                }
+
                 // Update invincibility
                 if (this.invincible && Date.now() > this.invincibleTime) {
                     this.invincible = false;
@@ -377,6 +421,18 @@
             }
 
             draw() {
+                // Draw motion blur trail
+                for (let i = this.trail.length - 1; i >= 0; i--) {
+                    const t = this.trail[i];
+                    const trailAlpha = t.alpha * (1 - i / this.trail.length);
+                    const trailRadius = this.radius * (1 - i * 0.1);
+
+                    ctx.beginPath();
+                    ctx.arc(t.x, t.y, trailRadius, 0, Math.PI * 2);
+                    ctx.fillStyle = `rgba(26, 26, 26, ${trailAlpha * 0.5})`;
+                    ctx.fill();
+                }
+
                 // Shadow
                 ctx.beginPath();
                 ctx.arc(this.x + 3, this.y + 3, this.radius, 0, Math.PI * 2);
@@ -426,22 +482,25 @@
                 this.speedBonus++;
             }
 
-            addRange() {
-                this.projectileRange += 30;
-                this.rangeBonus++;
+            addProjectileCount() {
+                this.projectileCount++;
+                this.countBonus++;
             }
         }
 
-        // Enemy class
+        // Enemy class with motion blur
         class Enemy {
             constructor(x, y) {
                 this.x = x;
                 this.y = y;
+                this.prevX = x;
+                this.prevY = y;
                 this.radius = CONFIG.enemyRadius;
                 this.hitPoints = CONFIG.enemyHitPoints;
                 this.alpha = 0;
                 this.scale = 0.3;
                 this.spawning = true;
+                this.trail = [];  // For motion blur
             }
 
             update() {
@@ -454,6 +513,10 @@
                     return;
                 }
 
+                // Store previous position
+                this.prevX = this.x;
+                this.prevY = this.y;
+
                 // Move towards player
                 const dx = game.player.x - this.x;
                 const dy = game.player.y - this.y;
@@ -463,11 +526,45 @@
                     this.x += (dx / dist) * CONFIG.enemySpeed;
                     this.y += (dy / dist) * CONFIG.enemySpeed;
                 }
+
+                // Update trail for motion blur
+                const velocityX = this.x - this.prevX;
+                const velocityY = this.y - this.prevY;
+                const velocity = Math.sqrt(velocityX * velocityX + velocityY * velocityY);
+
+                if (velocity > 0.5) {
+                    this.trail.unshift({ x: this.prevX, y: this.prevY, alpha: 0.3 });
+                    if (this.trail.length > CONFIG.motionBlurLength) {
+                        this.trail.pop();
+                    }
+                }
+
+                // Fade trail
+                this.trail = this.trail.filter(t => {
+                    t.alpha -= 0.05;
+                    return t.alpha > 0;
+                });
             }
 
             draw() {
                 ctx.save();
                 ctx.globalAlpha = this.alpha;
+
+                // Draw motion blur trail
+                if (!this.spawning) {
+                    for (let i = this.trail.length - 1; i >= 0; i--) {
+                        const t = this.trail[i];
+                        const trailAlpha = t.alpha * (1 - i / this.trail.length);
+                        const trailRadius = this.radius * this.scale * (1 - i * 0.08);
+
+                        ctx.beginPath();
+                        ctx.arc(t.x, t.y, trailRadius, 0, Math.PI * 2);
+                        ctx.fillStyle = `rgba(231, 76, 60, ${trailAlpha * 0.6})`;
+                        ctx.fill();
+                    }
+                }
+
+                // Main enemy
                 ctx.translate(this.x, this.y);
                 ctx.scale(this.scale, this.scale);
 
@@ -488,7 +585,7 @@
             }
         }
 
-        // PowerUp class
+        // PowerUp class with hover effect
         class PowerUp {
             constructor(x, y) {
                 this.x = x;
@@ -496,36 +593,83 @@
                 this.radius = CONFIG.powerUpRadius;
                 this.alpha = 0;
                 this.pulsePhase = 0;
+                this.hovered = false;
+                this.hoverScale = 1;
+                this.baseY = y;
+                this.floatPhase = Math.random() * Math.PI * 2;
             }
 
             update() {
                 this.alpha = Math.min(1, this.alpha + 0.05);
                 this.pulsePhase += 0.1;
+                this.floatPhase += 0.05;
+
+                // Floating animation
+                this.y = this.baseY + Math.sin(this.floatPhase) * 3;
+
+                // Check hover (proximity to player)
+                const distToPlayer = Math.sqrt(
+                    Math.pow(this.x - game.player.x, 2) +
+                    Math.pow(this.y - game.player.y, 2)
+                );
+                const distToMouse = Math.sqrt(
+                    Math.pow(this.x - game.mouseX, 2) +
+                    Math.pow(this.y - game.mouseY, 2)
+                );
+
+                this.hovered = distToMouse < 50 || distToPlayer < 60;
+
+                // Smooth hover scale
+                const targetScale = this.hovered ? 1.3 : 1;
+                this.hoverScale += (targetScale - this.hoverScale) * 0.2;
             }
 
             draw() {
-                const pulse = 1 + Math.sin(this.pulsePhase) * 0.2;
+                const pulse = 1 + Math.sin(this.pulsePhase) * 0.15;
+                const scale = this.hoverScale * pulse;
 
-                // Glow
+                // Outer glow (bigger when hovered)
+                const glowSize = this.hovered ? 12 : 6;
                 ctx.beginPath();
-                ctx.arc(this.x, this.y, (this.radius + 6) * pulse, 0, Math.PI * 2);
-                ctx.fillStyle = `rgba(255, 220, 50, ${0.3 * this.alpha})`;
+                ctx.arc(this.x, this.y, (this.radius + glowSize) * scale, 0, Math.PI * 2);
+                ctx.fillStyle = `rgba(255, 220, 50, ${(this.hovered ? 0.5 : 0.3) * this.alpha})`;
+                ctx.fill();
+
+                // Inner glow
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, (this.radius + 3) * scale, 0, Math.PI * 2);
+                ctx.fillStyle = `rgba(255, 230, 100, ${0.4 * this.alpha})`;
                 ctx.fill();
 
                 // Main
                 ctx.beginPath();
-                ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+                ctx.arc(this.x, this.y, this.radius * scale, 0, Math.PI * 2);
                 ctx.fillStyle = `rgba(255, 200, 0, ${this.alpha})`;
                 ctx.fill();
                 ctx.strokeStyle = `rgba(230, 180, 0, ${this.alpha})`;
                 ctx.lineWidth = 2;
                 ctx.stroke();
+
+                // Sparkle effect when hovered
+                if (this.hovered && this.alpha > 0.5) {
+                    const sparkleCount = 4;
+                    for (let i = 0; i < sparkleCount; i++) {
+                        const angle = (this.pulsePhase * 2 + i * Math.PI / 2);
+                        const sparkleX = this.x + Math.cos(angle) * (this.radius + 8) * scale;
+                        const sparkleY = this.y + Math.sin(angle) * (this.radius + 8) * scale;
+
+                        ctx.beginPath();
+                        ctx.arc(sparkleX, sparkleY, 2, 0, Math.PI * 2);
+                        ctx.fillStyle = `rgba(255, 255, 255, ${0.8 * this.alpha})`;
+                        ctx.fill();
+                    }
+                }
             }
         }
 
         // Projectile class
         class Projectile {
-            constructor(x, y, targetX, targetY, speed, range) {
+            constructor(x, y, targetX, targetY, speed, range, angleOffset = 0) {
                 this.x = x;
                 this.y = y;
                 this.radius = CONFIG.projectileRadius;
@@ -536,8 +680,11 @@
                 const dx = targetX - x;
                 const dy = targetY - y;
                 const dist = Math.sqrt(dx * dx + dy * dy);
-                this.vx = (dx / dist) * speed;
-                this.vy = (dy / dist) * speed;
+                const baseAngle = Math.atan2(dy, dx);
+                const finalAngle = baseAngle + angleOffset;
+
+                this.vx = Math.cos(finalAngle) * speed;
+                this.vy = Math.sin(finalAngle) * speed;
             }
 
             update() {
@@ -611,7 +758,14 @@
         // Spawn enemies
         function spawnEnemyWave() {
             game.wave++;
-            const count = CONFIG.initialEnemyCount + game.wave - 1;
+            game.spawnCount++;
+
+            // +1 enemy every second spawn (every 10 seconds)
+            if (game.spawnCount % 2 === 0) {
+                game.enemyCountBonus++;
+            }
+
+            const count = CONFIG.initialEnemyCount + game.enemyCountBonus;
 
             for (let i = 0; i < count; i++) {
                 let x, y, attempts = 0;
@@ -663,14 +817,37 @@
             }
 
             if (nearestEnemy) {
-                game.projectiles.push(new Projectile(
-                    game.player.x,
-                    game.player.y,
-                    nearestEnemy.x,
-                    nearestEnemy.y,
-                    game.player.projectileSpeed,
-                    game.player.projectileRange
-                ));
+                const count = game.player.projectileCount;
+
+                if (count === 1) {
+                    // Single projectile
+                    game.projectiles.push(new Projectile(
+                        game.player.x,
+                        game.player.y,
+                        nearestEnemy.x,
+                        nearestEnemy.y,
+                        game.player.projectileSpeed,
+                        game.player.projectileRange
+                    ));
+                } else {
+                    // Multiple projectiles with spread
+                    const spreadAngle = Math.PI / 8;  // Total spread
+                    const angleStep = spreadAngle / (count - 1);
+                    const startAngle = -spreadAngle / 2;
+
+                    for (let i = 0; i < count; i++) {
+                        const angleOffset = startAngle + angleStep * i;
+                        game.projectiles.push(new Projectile(
+                            game.player.x,
+                            game.player.y,
+                            nearestEnemy.x,
+                            nearestEnemy.y,
+                            game.player.projectileSpeed,
+                            game.player.projectileRange,
+                            angleOffset
+                        ));
+                    }
+                }
             }
         }
 
@@ -748,13 +925,18 @@
             for (let i = game.player.health; i < game.player.maxHealth; i++) hearts += '🖤';
             healthEl.textContent = hearts;
 
-            statsEl.textContent = `⚡${game.player.speedBonus}  🎯${game.player.rangeBonus}`;
+            statsEl.textContent = `⚡${game.player.speedBonus}  🔫${game.player.countBonus}`;
         }
 
         // Show ability selection
         function showAbilitySelection() {
             game.paused = true;
             abilityModal.classList.add('visible');
+
+            // Exit pointer lock for ability selection
+            if (document.pointerLockElement) {
+                document.exitPointerLock();
+            }
         }
 
         // Apply ability
@@ -772,10 +954,10 @@
                     text = '+1 Швидкість';
                     color = '#3498db';
                     break;
-                case 'range':
-                    game.player.addRange();
-                    text = '+1 Дальність';
-                    color = '#2ecc71';
+                case 'count':
+                    game.player.addProjectileCount();
+                    text = '+1 Снаряд';
+                    color = '#9b59b6';
                     break;
             }
 
@@ -789,6 +971,9 @@
             updateUI();
             abilityModal.classList.remove('visible');
             game.paused = false;
+
+            // Re-lock pointer after selection
+            canvas.requestPointerLock();
         }
 
         // Game over
@@ -797,6 +982,11 @@
             finalScoreEl.textContent = `Рахунок: ${game.score}`;
             finalWaveEl.textContent = `Хвиля: ${game.wave}`;
             gameOverModal.classList.add('visible');
+
+            // Exit pointer lock
+            if (document.pointerLockElement) {
+                document.exitPointerLock();
+            }
         }
 
         // Start game
@@ -806,6 +996,8 @@
                 paused: false,
                 score: 0,
                 wave: 0,
+                spawnCount: 0,
+                enemyCountBonus: 0,
                 player: new Player(CONFIG.canvasWidth / 2, CONFIG.canvasHeight / 2),
                 enemies: [],
                 powerUps: [],
@@ -816,7 +1008,8 @@
                 lastPowerUpSpawn: Date.now(),
                 lastShot: Date.now(),
                 mouseX: CONFIG.canvasWidth / 2,
-                mouseY: CONFIG.canvasHeight / 2
+                mouseY: CONFIG.canvasHeight / 2,
+                pointerLocked: false
             };
 
             startScreen.classList.add('hidden');
@@ -825,6 +1018,9 @@
             updateUI();
             scoreEl.textContent = '0';
             waveEl.textContent = 'Хвиля 1';
+
+            // Request pointer lock
+            canvas.requestPointerLock();
 
             // Spawn first wave immediately
             spawnEnemyWave();
@@ -940,27 +1136,54 @@
             requestAnimationFrame(gameLoop);
         }
 
-        // Event listeners
-        canvas.addEventListener('mousemove', (e) => {
-            const rect = canvas.getBoundingClientRect();
-            game.mouseX = e.clientX - rect.left;
-            game.mouseY = e.clientY - rect.top;
+        // Pointer Lock API for cursor confinement
+        canvas.addEventListener('click', () => {
+            if (game.running && !game.paused) {
+                canvas.requestPointerLock();
+            }
+        });
+
+        document.addEventListener('pointerlockchange', () => {
+            game.pointerLocked = document.pointerLockElement === canvas;
+            lockHint.style.display = game.pointerLocked ? 'none' : 'block';
+        });
+
+        // Mouse movement (works with pointer lock)
+        document.addEventListener('mousemove', (e) => {
+            if (document.pointerLockElement === canvas) {
+                // Pointer is locked - use movement delta
+                game.mouseX += e.movementX;
+                game.mouseY += e.movementY;
+
+                // Clamp to canvas bounds
+                game.mouseX = Math.max(0, Math.min(CONFIG.canvasWidth, game.mouseX));
+                game.mouseY = Math.max(0, Math.min(CONFIG.canvasHeight, game.mouseY));
+            } else {
+                // Normal mode - use absolute position
+                const rect = canvas.getBoundingClientRect();
+                game.mouseX = e.clientX - rect.left;
+                game.mouseY = e.clientY - rect.top;
+
+                // Clamp to canvas bounds
+                game.mouseX = Math.max(0, Math.min(CONFIG.canvasWidth, game.mouseX));
+                game.mouseY = Math.max(0, Math.min(CONFIG.canvasHeight, game.mouseY));
+            }
         });
 
         canvas.addEventListener('touchmove', (e) => {
             e.preventDefault();
             const rect = canvas.getBoundingClientRect();
             const touch = e.touches[0];
-            game.mouseX = touch.clientX - rect.left;
-            game.mouseY = touch.clientY - rect.top;
+            game.mouseX = Math.max(0, Math.min(CONFIG.canvasWidth, touch.clientX - rect.left));
+            game.mouseY = Math.max(0, Math.min(CONFIG.canvasHeight, touch.clientY - rect.top));
         });
 
         canvas.addEventListener('touchstart', (e) => {
             e.preventDefault();
             const rect = canvas.getBoundingClientRect();
             const touch = e.touches[0];
-            game.mouseX = touch.clientX - rect.left;
-            game.mouseY = touch.clientY - rect.top;
+            game.mouseX = Math.max(0, Math.min(CONFIG.canvasWidth, touch.clientX - rect.left));
+            game.mouseY = Math.max(0, Math.min(CONFIG.canvasHeight, touch.clientY - rect.top));
         });
 
         document.getElementById('startBtn').addEventListener('click', startGame);
